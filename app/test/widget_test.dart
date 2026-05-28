@@ -43,8 +43,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v2.0'), findsOneWidget);
-    expect(find.text('Small Beta Feedback'), findsOneWidget);
+    expect(find.text('SkyLog v2.1'), findsOneWidget);
+    expect(find.text('Automatic Web Deploy'), findsOneWidget);
   });
 
   testWidgets('profile explains beta status and local data privacy', (
@@ -211,6 +211,32 @@ void main() {
     expect(find.text('Deployment Readiness'), findsWidgets);
     expect(find.textContaining('Run flutter build web'), findsOneWidget);
     expect(find.textContaining('private beta link'), findsOneWidget);
+  });
+
+  testWidgets('profile opens automatic web deploy plan', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('automatic-web-deploy-button')),
+      80,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    final automaticDeployTopLeft = tester.getTopLeft(
+      find.byKey(const Key('automatic-web-deploy-button')),
+    );
+    await tester.tapAt(automaticDeployTopLeft + const Offset(120, 32));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Automatic Web Deploy'), findsWidgets);
+    expect(find.textContaining('pushed to main'), findsOneWidget);
+    expect(find.textContaining('GitHub Actions deploys'), findsOneWidget);
   });
 
   testWidgets('profile opens fixed web beta path', (WidgetTester tester) async {

@@ -33,6 +33,9 @@ flutter build web
 7. Wait for the workflow to finish.
 8. Copy the Pages URL from the workflow summary.
 
+Starting in v2.1, future stable pushes to `main` also trigger this workflow
+automatically.
+
 The workflow lives at:
 
 ```text

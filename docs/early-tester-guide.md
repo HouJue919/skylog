@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v2.0 - Small Beta Feedback
+SkyLog v2.1 - Automatic Web Deploy
 
 This is a private beta testing version. It is not a public release yet.
 

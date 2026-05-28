@@ -146,6 +146,13 @@ This will help turn the project into a strong long-term portfolio story.
 - Added a Profile entry for Small Beta Feedback Plan.
 - Added `docs/small-beta-feedback-plan.md` to define the first feedback process.
 - Added a widget test for opening the small beta feedback plan dialog.
+- Started SkyLog v2.1 as an automatic web deployment milestone.
+- Updated the current app version label to `SkyLog v2.1`.
+- Updated `.github/workflows/deploy-web.yml` so pushes to `main` deploy the web
+  beta automatically.
+- Added a Profile entry for Automatic Web Deploy.
+- Added `docs/automatic-web-deploy.md` to document the stable release flow.
+- Added a widget test for opening the automatic web deploy dialog.
 
 ### Reflection
 
@@ -192,10 +199,12 @@ checks needed before creating a fixed beta link. SkyLog v1.9 turns that
 readiness into a concrete GitHub Pages route, while keeping the first fixed link
 limited to a small trusted tester group. SkyLog v2.0 begins the feedback stage:
 the app now guides who should test, what they should try, and how feedback
-should be recorded before more features are added.
+should be recorded before more features are added. SkyLog v2.1 improves the
+release workflow by making stable pushes to `main` automatically update the
+fixed beta website after the local checks pass.
 
 ### Next Step
 
 - Share the fixed beta link with a small first group.
 - Record tester feedback in the project log.
-- Use feedback to decide the v2.1 fixes before adding major new features.
+- Use feedback to decide the v2.2 fixes before adding major new features.

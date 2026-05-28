@@ -35,6 +35,9 @@ The GitHub Pages workflow lives in:
 .github/workflows/deploy-web.yml
 ```
 
+Starting in v2.1, stable pushes to `main` automatically run this workflow.
+Manual workflow runs are still available from GitHub Actions.
+
 ## Manual Checks
 
 - Open the local app and confirm Profile shows the current version.
@@ -43,6 +46,7 @@ The GitHub Pages workflow lives in:
 - Open Tester Instructions.
 - Open Beta Release Checklist.
 - Open Deployment Readiness.
+- Open Automatic Web Deploy.
 - Open Fixed Web Beta Path.
 - Open Small Beta Feedback Plan.
 - Complete the pre-flight checklist.

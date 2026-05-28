@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v2.0';
-const String _appStageLabel = 'Small Beta Feedback';
+const String _appVersionLabel = 'SkyLog v2.1';
+const String _appStageLabel = 'Automatic Web Deploy';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -1244,6 +1244,48 @@ Record feedback after each test in the project log before changing features.
     );
   }
 
+  Future<void> _showAutomaticWebDeploy(BuildContext context) async {
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Automatic Web Deploy'),
+          content: SingleChildScrollView(
+            child: Text(
+              '''
+SkyLog now updates the fixed web link automatically after stable changes are pushed to main.
+
+Release flow:
+
+1. Build the next small feature locally.
+2. Run flutter analyze.
+3. Run flutter test.
+4. Run flutter build web.
+5. Commit the stable version.
+6. Push to main.
+7. GitHub Actions deploys the web beta automatically.
+
+Important:
+
+- The URL stays the same.
+- Only tested versions should be pushed to main.
+- If the workflow fails, the previous working web version remains the fallback.
+'''
+                  .trim(),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1328,6 +1370,14 @@ Record feedback after each test in the project log before changing features.
               title: 'Deployment Readiness',
               subtitle: 'Checks required before creating a fixed web link.',
               onTap: () => _showDeploymentReadiness(context),
+            ),
+            const SizedBox(height: 10),
+            _SettingsTile(
+              key: const Key('automatic-web-deploy-button'),
+              icon: Icons.sync_outlined,
+              title: 'Automatic Web Deploy',
+              subtitle: 'How stable pushes update the fixed beta link.',
+              onTap: () => _showAutomaticWebDeploy(context),
             ),
             const SizedBox(height: 10),
             _SettingsTile(
@@ -2220,7 +2270,7 @@ class _VersionBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Collecting focused feedback from the first small beta group.',
+                  'Stable main-branch updates now deploy to the beta web link.',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: const Color(0xFF647B7A),
                   ),
