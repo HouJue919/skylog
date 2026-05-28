@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "SkyLog Web (fixed storage)",
+      "request": "launch",
+      "type": "dart",
+      "program": "app/lib/main.dart",
+      "deviceId": "chrome",
+      "toolArgs": [
+        "--web-port",
+        "5055"
+      ]
+    }
+  ]
+}

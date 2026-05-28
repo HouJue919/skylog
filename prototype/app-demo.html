@@ -1,0 +1,1289 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkyLog App Demo</title>
+  <style>
+    :root {
+      --page: #dfe7ea;
+      --phone: #0b1418;
+      --bg: #f5f8f8;
+      --surface: #ffffff;
+      --ink: #152229;
+      --muted: #6d7a82;
+      --line: #dfe7e9;
+      --teal: #0f8b8d;
+      --blue: #2f6f9f;
+      --green: #3e7f4f;
+      --amber: #bd7a1b;
+      --red: #b74b4b;
+      --shadow: 0 18px 42px rgba(20, 36, 43, 0.18);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(15, 139, 141, 0.18), transparent 30%),
+        radial-gradient(circle at 82% 84%, rgba(47, 111, 159, 0.16), transparent 32%),
+        var(--page);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { border: 0; cursor: pointer; }
+
+    .stage {
+      width: min(100%, 430px);
+      display: grid;
+      gap: 14px;
+    }
+
+    .device {
+      width: 100%;
+      height: min(860px, calc(100vh - 56px));
+      min-height: 720px;
+      background: var(--phone);
+      border-radius: 42px;
+      padding: 12px;
+      box-shadow: 0 28px 80px rgba(8, 18, 24, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+    }
+
+    .screen {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 32px;
+      background: var(--bg);
+    }
+
+    .statusbar {
+      height: 34px;
+      padding: 10px 18px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #0f1c22;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(245, 248, 248, 0.94);
+      position: relative;
+      z-index: 8;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .signal {
+      width: 16px;
+      height: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      align-items: end;
+    }
+
+    .signal i {
+      display: block;
+      background: currentColor;
+      border-radius: 2px;
+    }
+
+    .signal i:nth-child(1) { height: 3px; }
+    .signal i:nth-child(2) { height: 5px; }
+    .signal i:nth-child(3) { height: 7px; }
+    .signal i:nth-child(4) { height: 9px; }
+
+    .battery {
+      width: 22px;
+      height: 11px;
+      border: 1.8px solid currentColor;
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .battery::before {
+      content: "";
+      position: absolute;
+      width: 13px;
+      height: 5px;
+      left: 2px;
+      top: 2px;
+      background: currentColor;
+      border-radius: 1px;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 5px;
+      right: -4px;
+      top: 2px;
+      background: currentColor;
+      border-radius: 0 2px 2px 0;
+    }
+
+    .appbar {
+      height: 58px;
+      padding: 8px 18px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(245, 248, 248, 0.94);
+      border-bottom: 1px solid rgba(223, 231, 233, 0.72);
+      position: relative;
+      z-index: 7;
+    }
+
+    .appbar-title {
+      min-width: 0;
+    }
+
+    .appbar-title h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .appbar-title span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .icon-btn, .small-btn, .primary-btn, .outline-btn {
+      min-height: 38px;
+      border-radius: var(--radius);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .icon-btn {
+      width: 38px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .small-btn {
+      padding: 0 12px;
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .primary-btn {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 16px;
+      background: var(--teal);
+      color: white;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(15, 139, 141, 0.22);
+    }
+
+    .outline-btn {
+      width: 100%;
+      min-height: 46px;
+      padding: 0 16px;
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      font-weight: 750;
+    }
+
+    svg { width: 19px; height: 19px; flex: 0 0 auto; }
+
+    .viewport {
+      position: absolute;
+      inset: 92px 0 78px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+
+    .view {
+      min-height: 100%;
+      display: none;
+      padding: 16px 16px 24px;
+    }
+
+    .view.active { display: block; }
+
+    .hero-card {
+      min-height: 220px;
+      border-radius: 18px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(7, 21, 27, 0.08), rgba(7, 21, 27, 0.76)),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80") center / cover;
+      color: white;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card h2 {
+      margin: 0 0 7px;
+      font-size: 23px;
+      line-height: 1.12;
+    }
+
+    .hero-card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      min-height: 26px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.17);
+      color: inherit;
+      font-size: 12px;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section-head {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .section-head button {
+      background: transparent;
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .stat {
+      min-height: 92px;
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .stat small {
+      display: block;
+      margin-top: 7px;
+      color: var(--green);
+      font-size: 11px;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .quick {
+      min-height: 80px;
+      padding: 12px 8px;
+      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: grid;
+      place-items: center;
+      gap: 6px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .quick svg { color: var(--teal); }
+
+    .log-card {
+      padding: 10px;
+      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .log-card img {
+      width: 86px;
+      height: 82px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    .log-card h3 {
+      margin: 0 0 5px;
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .log-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .meta {
+      margin-top: 7px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .search {
+      position: sticky;
+      top: -16px;
+      z-index: 4;
+      padding: 0 0 12px;
+      background: linear-gradient(var(--bg) 80%, rgba(245, 248, 248, 0));
+    }
+
+    .search input {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0 16px;
+      background: var(--surface);
+      color: var(--ink);
+      outline: none;
+    }
+
+    .form-card, .detail-card, .profile-card {
+      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .form-card h2, .detail-card h2, .profile-card h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+
+    .field label {
+      color: #33434c;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #fbfdfd;
+      color: var(--ink);
+      outline: none;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(15, 139, 141, 0.13);
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .media-upload {
+      min-height: 122px;
+      border-radius: 14px;
+      border: 1px dashed #aab9bf;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+      background: #fbfdfd;
+      padding: 12px;
+      font-size: 13px;
+    }
+
+    .media-upload svg {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 8px;
+      color: var(--teal);
+    }
+
+    .map {
+      position: relative;
+      height: 280px;
+      border-radius: 18px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(47, 111, 159, 0.12) 1px, transparent 1px),
+        linear-gradient(rgba(47, 111, 159, 0.12) 1px, transparent 1px),
+        #e7f0f2;
+      background-size: 38px 38px;
+      border: 1px solid var(--line);
+    }
+
+    .map.large {
+      height: 510px;
+    }
+
+    .road {
+      position: absolute;
+      height: 12px;
+      width: 125%;
+      left: -18%;
+      top: 48%;
+      background: rgba(255, 255, 255, 0.76);
+      transform: rotate(-18deg);
+      border-top: 1px solid rgba(47, 111, 159, 0.12);
+      border-bottom: 1px solid rgba(47, 111, 159, 0.12);
+    }
+
+    .water {
+      position: absolute;
+      width: 62%;
+      height: 46%;
+      right: -18%;
+      bottom: -10%;
+      border-radius: 50% 0 0 0;
+      background: rgba(47, 111, 159, 0.2);
+    }
+
+    .pin {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      background: var(--red);
+      border: 3px solid white;
+      box-shadow: 0 10px 18px rgba(22, 39, 45, 0.25);
+    }
+
+    .pin::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: white;
+      left: 4px;
+      top: 4px;
+    }
+
+    .pin.a { left: 42%; top: 42%; }
+    .pin.b { left: 24%; top: 27%; background: var(--teal); }
+    .pin.c { left: 68%; top: 30%; background: var(--amber); }
+    .pin.d { left: 62%; top: 68%; background: var(--blue); }
+
+    .map-sheet {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      min-height: 86px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 13px;
+      box-shadow: var(--shadow);
+    }
+
+    .map-sheet strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 15px;
+    }
+
+    .map-sheet span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .detail-cover {
+      height: 240px;
+      margin: -16px -16px 14px;
+      background:
+        linear-gradient(180deg, rgba(7, 21, 27, 0.02), rgba(7, 21, 27, 0.72)),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80") center / cover;
+      border-radius: 0 0 24px 24px;
+      display: flex;
+      align-items: flex-end;
+      padding: 18px;
+      color: white;
+    }
+
+    .detail-cover h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      line-height: 1.08;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .info {
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fbfdfd;
+    }
+
+    .info span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
+    .info strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .gallery img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .profile-head {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      color: white;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .profile-head h2 {
+      margin: 0 0 4px;
+    }
+
+    .profile-head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .drone-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .drone-row:last-child { border-bottom: 0; }
+
+    .drone-row strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .drone-row span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .badge {
+      min-height: 26px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: rgba(15, 139, 141, 0.12);
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .tabbar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 78px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: start;
+      padding: 8px 10px 10px;
+      background: rgba(255, 255, 255, 0.96);
+      border-top: 1px solid var(--line);
+      z-index: 9;
+    }
+
+    .tabbar button {
+      height: 56px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 3px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 750;
+    }
+
+    .tabbar button.active {
+      color: var(--teal);
+    }
+
+    .tabbar button svg {
+      width: 21px;
+      height: 21px;
+    }
+
+    .fab {
+      position: absolute;
+      left: 50%;
+      bottom: 44px;
+      transform: translateX(-50%);
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: white;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 28px rgba(15, 139, 141, 0.32);
+      z-index: 10;
+      border: 4px solid white;
+    }
+
+    .fab svg {
+      width: 25px;
+      height: 25px;
+    }
+
+    .toast {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 96px;
+      min-height: 44px;
+      border-radius: 14px;
+      background: #102a33;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      font-size: 13px;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: 0.22s ease;
+      z-index: 12;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .prototype-note {
+      color: #4d5b63;
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 0;
+        background: var(--phone);
+      }
+
+      .stage {
+        width: 100%;
+        height: 100vh;
+      }
+
+      .device {
+        height: 100vh;
+        min-height: 0;
+        border-radius: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      .screen {
+        border-radius: 0;
+      }
+
+      .prototype-note {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="device">
+      <div class="screen">
+        <div class="statusbar">
+          <span>9:41</span>
+          <div class="status-icons" aria-hidden="true">
+            <div class="signal"><i></i><i></i><i></i><i></i></div>
+            <span>5G</span>
+            <div class="battery"></div>
+          </div>
+        </div>
+
+        <header class="appbar">
+          <button class="icon-btn" id="backBtn" title="返回" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div class="appbar-title">
+            <h1 id="pageTitle">SkyLog</h1>
+            <span id="pageSubtitle">记录每一次无人机飞行</span>
+          </div>
+          <button class="icon-btn" title="通知">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          </button>
+        </header>
+
+        <main class="viewport" id="viewport">
+          <section class="view active" id="home">
+            <article class="hero-card" data-open-detail>
+              <h2>海边日落低空飞行</h2>
+              <p>风力偏大，低空横移画面有轻微抖动。日落光线层次很好，适合作为旅行视频开场。</p>
+              <div class="chips">
+                <span class="chip">DJI Mini 4 Pro</span>
+                <span class="chip">32 分钟</span>
+                <span class="chip">多云 / 4 级风</span>
+              </div>
+            </article>
+
+            <section class="section">
+              <div class="section-head">
+                <h2>飞行概览</h2>
+                <button data-jump="logs">查看全部</button>
+              </div>
+              <div class="stats">
+                <div class="stat"><span>总飞行次数</span><strong>28</strong><small>本月 +4</small></div>
+                <div class="stat"><span>总飞行时长</span><strong>11.6h</strong><small>平均 25 分钟</small></div>
+                <div class="stat"><span>飞行地点</span><strong>14</strong><small>覆盖 5 个城市</small></div>
+                <div class="stat"><span>素材数量</span><strong>326</strong><small>照片 298 / 视频 28</small></div>
+              </div>
+            </section>
+
+            <section class="section">
+              <div class="section-head">
+                <h2>快捷操作</h2>
+              </div>
+              <div class="quick-actions">
+                <button class="quick" data-jump="new">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                  新增飞行
+                </button>
+                <button class="quick" data-jump="map">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"/><path d="M9 3v15M15 6v15"/></svg>
+                  地图足迹
+                </button>
+                <button class="quick" id="aiHome">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+                  AI 复盘
+                </button>
+              </div>
+            </section>
+
+            <section class="section">
+              <div class="section-head">
+                <h2>最近日志</h2>
+                <button data-jump="logs">更多</button>
+              </div>
+              <article class="log-card" data-open-detail>
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=320&q=80" alt="">
+                <div>
+                  <h3>青岛 石老人海岸</h3>
+                  <p>第一次在海边低空飞行，风比较大，画面有些不稳。</p>
+                  <div class="meta"><span>2026-05-18</span><span>32 分钟</span><span>多云</span></div>
+                </div>
+              </article>
+              <article class="log-card" data-jump="detail">
+                <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=320&q=80" alt="">
+                <div>
+                  <h3>杭州 城市河道</h3>
+                  <p>俯拍线条清楚，中午光线偏硬，适合做转场素材。</p>
+                  <div class="meta"><span>2026-05-05</span><span>24 分钟</span><span>晴</span></div>
+                </div>
+              </article>
+            </section>
+          </section>
+
+          <section class="view" id="logs">
+            <div class="search">
+              <input id="searchInput" placeholder="搜索地点、设备、天气或总结">
+            </div>
+            <article class="log-card log-item" data-text="青岛 海边 日落 多云 DJI Mini 4 Pro" data-open-detail>
+              <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=320&q=80" alt="">
+              <div>
+                <h3>海边日落低空飞行</h3>
+                <p>风力偏大，横移画面有轻微抖动，日落光线适合做旅行视频开场。</p>
+                <div class="meta"><span>2026-05-18</span><span>32 分钟</span><span>多云</span></div>
+              </div>
+            </article>
+            <article class="log-card log-item" data-text="杭州 河道 城市 晴 DJI Air 3" data-open-detail>
+              <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=320&q=80" alt="">
+              <div>
+                <h3>城市河道俯拍</h3>
+                <p>中午光线较硬，水面反光明显。俯拍线条清楚，适合做转场素材。</p>
+                <div class="meta"><span>2026-05-05</span><span>24 分钟</span><span>晴</span></div>
+              </div>
+            </article>
+            <article class="log-card log-item" data-text="黄山 山谷 推进 阴 DJI Mavic 3 Pro" data-open-detail>
+              <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=320&q=80" alt="">
+              <div>
+                <h3>山谷推进镜头练习</h3>
+                <p>山谷能见度一般，推进速度需要更慢。素材适合作为纪录片氛围镜头。</p>
+                <div class="meta"><span>2026-04-21</span><span>41 分钟</span><span>阴</span></div>
+              </div>
+            </article>
+            <article class="log-card log-item" data-text="厦门 海湾 公园 多云 DJI Mini 4 Pro" data-open-detail>
+              <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=320&q=80" alt="">
+              <div>
+                <h3>海湾公园环绕镜头</h3>
+                <p>环绕速度稳定，人物和海岸线关系清楚，可以作为片尾镜头。</p>
+                <div class="meta"><span>2026-04-08</span><span>29 分钟</span><span>多云</span></div>
+              </div>
+            </article>
+          </section>
+
+          <section class="view" id="new">
+            <div class="form-card">
+              <h2>基础信息</h2>
+              <div class="field">
+                <label for="location">飞行地点</label>
+                <input id="location" value="青岛 石老人海岸">
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="date">日期</label>
+                  <input id="date" type="date" value="2026-05-18">
+                </div>
+                <div class="field">
+                  <label for="duration">时长</label>
+                  <input id="duration" value="32 分钟">
+                </div>
+              </div>
+              <div class="field">
+                <label for="drone">无人机型号</label>
+                <select id="drone">
+                  <option>DJI Mini 4 Pro</option>
+                  <option>DJI Air 3</option>
+                  <option>DJI Mavic 3 Pro</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-card">
+              <h2>环境与目的</h2>
+              <div class="field-row">
+                <div class="field">
+                  <label for="weather">天气</label>
+                  <select id="weather">
+                    <option>多云</option>
+                    <option>晴</option>
+                    <option>阴</option>
+                    <option>小雨</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="wind">风力</label>
+                  <input id="wind" value="4 级">
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="battery">电池</label>
+                  <input id="battery" value="2 块">
+                </div>
+                <div class="field">
+                  <label for="purpose">目的</label>
+                  <select id="purpose">
+                    <option>旅行航拍</option>
+                    <option>练习飞行</option>
+                    <option>城市风景</option>
+                    <option>素材测试</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-card">
+              <h2>素材</h2>
+              <button class="media-upload" id="uploadBtn">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+                  添加封面、照片或短视频
+                </span>
+              </button>
+            </div>
+
+            <div class="form-card">
+              <h2>飞行总结</h2>
+              <div class="field">
+                <label for="summary">复盘内容</label>
+                <textarea id="summary">今天第一次在海边低空飞行，风比较大，所以横移画面有些不稳。日落时段光线很好，适合做旅行视频开头。</textarea>
+              </div>
+              <button class="outline-btn" id="aiDraft">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg>
+                生成 AI 总结草稿
+              </button>
+            </div>
+
+            <button class="primary-btn" id="saveBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+              保存飞行记录
+            </button>
+          </section>
+
+          <section class="view" id="map">
+            <div class="map large">
+              <div class="road"></div>
+              <div class="water"></div>
+              <button class="pin a" data-map="青岛 石老人海岸|2026-05-18 / 32 分钟 / 多云"></button>
+              <button class="pin b" data-map="杭州 城市河道|2026-05-05 / 24 分钟 / 晴"></button>
+              <button class="pin c" data-map="黄山 山谷入口|2026-04-21 / 41 分钟 / 阴"></button>
+              <button class="pin d" data-map="厦门 海湾公园|2026-04-08 / 29 分钟 / 多云"></button>
+              <div class="map-sheet">
+                <strong id="mapTitle">青岛 石老人海岸</strong>
+                <span id="mapMeta">最近飞行：2026-05-18 / 32 分钟 / 多云。点击地图点位切换摘要。</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="profile">
+            <div class="profile-card">
+              <div class="profile-head">
+                <div class="avatar">L</div>
+                <div>
+                  <h2>SkyLog Pilot</h2>
+                  <span>旅行航拍 / 初级进阶飞手</span>
+                </div>
+              </div>
+            </div>
+            <div class="stats">
+              <div class="stat"><span>飞行次数</span><strong>28</strong><small>本月 +4</small></div>
+              <div class="stat"><span>总时长</span><strong>11.6h</strong><small>最长 41 分钟</small></div>
+            </div>
+            <div class="profile-card section">
+              <h2>我的无人机</h2>
+              <div class="drone-row">
+                <div><strong>DJI Mini 4 Pro</strong><span>16 次飞行 / 6.3h</span></div>
+                <span class="badge">常用</span>
+              </div>
+              <div class="drone-row">
+                <div><strong>DJI Air 3</strong><span>9 次飞行 / 3.8h</span></div>
+                <span class="badge">备用</span>
+              </div>
+              <div class="drone-row">
+                <div><strong>DJI Mavic 3 Pro</strong><span>3 次飞行 / 1.5h</span></div>
+                <span class="badge">体验</span>
+              </div>
+            </div>
+            <button class="outline-btn">设置与同步</button>
+          </section>
+
+          <section class="view" id="detail">
+            <div class="detail-cover">
+              <div>
+                <h2>海边日落低空飞行</h2>
+                <div class="chips">
+                  <span class="chip">青岛 石老人海岸</span>
+                  <span class="chip">2026-05-18</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <h2>飞行数据</h2>
+              <div class="info-grid">
+                <div class="info"><span>无人机</span><strong>DJI Mini 4 Pro</strong></div>
+                <div class="info"><span>飞行时长</span><strong>32 分钟</strong></div>
+                <div class="info"><span>天气</span><strong>多云</strong></div>
+                <div class="info"><span>风力</span><strong>4 级</strong></div>
+                <div class="info"><span>电池</span><strong>2 块</strong></div>
+                <div class="info"><span>目的</span><strong>旅行航拍</strong></div>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <h2>地图位置</h2>
+              <div class="map">
+                <div class="road"></div>
+                <div class="water"></div>
+                <div class="pin a"></div>
+                <div class="map-sheet">
+                  <strong>青岛 石老人海岸</strong>
+                  <span>GPS: 36.089, 120.487</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <h2>素材</h2>
+              <div class="gallery">
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=240&q=80" alt="">
+                <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=240&q=80" alt="">
+                <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=240&q=80" alt="">
+              </div>
+            </div>
+
+            <div class="detail-card">
+              <h2>飞行总结</h2>
+              <p>今天第一次在海边低空飞行，风比较大，所以横移画面有些不稳。日落时段光线很好，金色侧光增强了海岸线的层次，适合保留作为旅行视频的开头镜头。</p>
+            </div>
+
+            <div class="detail-card">
+              <h2>问题与改进</h2>
+              <p>返航电量预留偏少，下次需要提前设置更保守的返航提醒。低空横移时应降低速度，并优先选择风力更小的时间段。</p>
+              <button class="outline-btn" id="detailAi">重新生成 AI 复盘</button>
+            </div>
+          </section>
+        </main>
+
+        <button class="fab" id="fab" title="新增飞行">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+
+        <nav class="tabbar" aria-label="Bottom navigation">
+          <button class="active" data-tab="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M9 21V9h6v12"/></svg>
+            首页
+          </button>
+          <button data-tab="logs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
+            日志
+          </button>
+          <button data-tab="new" style="visibility:hidden;">新增</button>
+          <button data-tab="map">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"/><path d="M9 3v15M15 6v15"/></svg>
+            地图
+          </button>
+          <button data-tab="profile">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+            我的
+          </button>
+        </nav>
+
+        <div class="toast" id="toast">已保存飞行记录</div>
+      </div>
+    </div>
+    <div class="prototype-note">SkyLog App 交互示意：点击底部 Tab、中央新增按钮、日志卡片、地图点位和 AI 按钮。</div>
+  </div>
+
+  <script>
+    const titles = {
+      home: ["SkyLog", "记录每一次无人机飞行"],
+      logs: ["飞行日志", "按时间回顾每次飞行"],
+      new: ["新增飞行", "填写飞行数据和复盘"],
+      map: ["地图足迹", "查看你飞过的地方"],
+      profile: ["我的", "飞行统计与设备管理"],
+      detail: ["飞行详情", "地图、素材与复盘总结"]
+    };
+
+    const views = document.querySelectorAll(".view");
+    const tabButtons = document.querySelectorAll("[data-tab]");
+    const pageTitle = document.getElementById("pageTitle");
+    const pageSubtitle = document.getElementById("pageSubtitle");
+    const viewport = document.getElementById("viewport");
+    const backBtn = document.getElementById("backBtn");
+    const fab = document.getElementById("fab");
+    let previousView = "home";
+    let currentView = "home";
+
+    function showView(id, options = {}) {
+      if (!titles[id]) return;
+      if (!options.fromBack && id !== currentView) previousView = currentView;
+      currentView = id;
+      views.forEach(view => view.classList.toggle("active", view.id === id));
+      tabButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.tab === id));
+      pageTitle.textContent = titles[id][0];
+      pageSubtitle.textContent = titles[id][1];
+      backBtn.style.display = id === "detail" ? "inline-flex" : "none";
+      fab.style.display = id === "new" ? "none" : "grid";
+      viewport.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1900);
+    }
+
+    tabButtons.forEach(button => {
+      button.addEventListener("click", () => showView(button.dataset.tab));
+    });
+
+    document.querySelectorAll("[data-jump]").forEach(el => {
+      el.addEventListener("click", () => showView(el.dataset.jump));
+    });
+
+    document.querySelectorAll("[data-open-detail]").forEach(el => {
+      el.addEventListener("click", () => showView("detail"));
+    });
+
+    fab.addEventListener("click", () => showView("new"));
+
+    backBtn.addEventListener("click", () => {
+      showView(previousView === "detail" ? "home" : previousView, { fromBack: true });
+    });
+
+    document.getElementById("saveBtn").addEventListener("click", () => {
+      showToast("已保存飞行记录");
+      setTimeout(() => showView("logs"), 520);
+    });
+
+    document.getElementById("uploadBtn").addEventListener("click", () => {
+      showToast("已选择 1 张封面和 3 个素材");
+    });
+
+    document.getElementById("aiDraft").addEventListener("click", () => {
+      document.getElementById("summary").value = "本次飞行在海边日落时段完成，多云天气让光线更柔和，但 4 级风对低空横移稳定性造成影响。建议下次降低横移速度，并提前规划返航电量。";
+      showToast("已生成 AI 总结草稿");
+    });
+
+    document.getElementById("aiHome").addEventListener("click", () => {
+      showView("new");
+      setTimeout(() => {
+        document.getElementById("aiDraft").click();
+      }, 220);
+    });
+
+    document.getElementById("detailAi").addEventListener("click", () => {
+      showToast("AI 复盘已更新");
+    });
+
+    const searchInput = document.getElementById("searchInput");
+    const logItems = document.querySelectorAll(".log-item");
+    searchInput.addEventListener("input", () => {
+      const keyword = searchInput.value.trim().toLowerCase();
+      logItems.forEach(item => {
+        item.style.display = item.dataset.text.toLowerCase().includes(keyword) || !keyword ? "grid" : "none";
+      });
+    });
+
+    document.querySelectorAll("[data-map]").forEach(pin => {
+      pin.addEventListener("click", () => {
+        const [title, meta] = pin.dataset.map.split("|");
+        document.getElementById("mapTitle").textContent = title;
+        document.getElementById("mapMeta").textContent = "最近飞行：" + meta;
+        showToast("已切换飞行地点");
+      });
+    });
+  </script>
+</body>
+</html>

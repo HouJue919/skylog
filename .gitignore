@@ -1,0 +1,9 @@
+.DS_Store
+
+# Flutter/Dart generated files
+**/.dart_tool/
+**/build/
+
+# IDE local files
+**/.idea/
+*.iml
