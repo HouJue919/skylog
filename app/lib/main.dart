@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v2.2';
-const String _appStageLabel = 'Tester Quick Start';
+const String _appVersionLabel = 'SkyLog v2.3';
+const String _appStageLabel = 'Organized Beta Profile';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -1351,22 +1351,22 @@ Important:
               subtitle: '4 flights - practice drone',
             ),
             const SizedBox(height: 18),
-            const _FormSectionTitle('Beta Readiness'),
+            const _FormSectionTitle('Beta Testing'),
             const SizedBox(height: 10),
             _SettingsTile(
-              key: const Key('about-beta-button'),
-              icon: Icons.info_outline,
-              title: 'About This Beta',
-              subtitle: 'What SkyLog is ready for, and what it is not.',
-              onTap: () => _showBetaNote(context),
+              key: const Key('tester-quick-start-button'),
+              icon: Icons.playlist_add_check_circle_outlined,
+              title: 'Tester Quick Start',
+              subtitle: 'A short first-test path for new beta testers.',
+              onTap: () => _showTesterQuickStart(context),
             ),
             const SizedBox(height: 10),
             _SettingsTile(
-              key: const Key('privacy-note-button'),
-              icon: Icons.lock_outline,
-              title: 'Privacy and Local Data',
-              subtitle: 'Explain where beta flight records are stored.',
-              onTap: () => _showPrivacyNote(context),
+              key: const Key('tester-instructions-button'),
+              icon: Icons.rule_folder_outlined,
+              title: 'Tester Instructions',
+              subtitle: 'Known limits and the flows testers should try.',
+              onTap: () => _showTesterInstructions(context),
             ),
             const SizedBox(height: 10),
             _SettingsTile(
@@ -1384,6 +1384,26 @@ Important:
               subtitle: 'Who should test v2.0 and what they should try.',
               onTap: () => _showSmallBetaFeedbackPlan(context),
             ),
+            const SizedBox(height: 18),
+            const _FormSectionTitle('Project Info'),
+            const SizedBox(height: 10),
+            _SettingsTile(
+              key: const Key('about-beta-button'),
+              icon: Icons.info_outline,
+              title: 'About This Beta',
+              subtitle: 'What SkyLog is ready for, and what it is not.',
+              onTap: () => _showBetaNote(context),
+            ),
+            const SizedBox(height: 10),
+            _SettingsTile(
+              key: const Key('privacy-note-button'),
+              icon: Icons.lock_outline,
+              title: 'Privacy and Local Data',
+              subtitle: 'Explain where beta flight records are stored.',
+              onTap: () => _showPrivacyNote(context),
+            ),
+            const SizedBox(height: 18),
+            const _FormSectionTitle('Release Tools'),
             const SizedBox(height: 10),
             _SettingsTile(
               key: const Key('beta-release-checklist-button'),
@@ -1391,22 +1411,6 @@ Important:
               title: 'Beta Release Checklist',
               subtitle: 'Run this before sharing SkyLog with a tester.',
               onTap: () => _showReleaseChecklist(context),
-            ),
-            const SizedBox(height: 10),
-            _SettingsTile(
-              key: const Key('tester-instructions-button'),
-              icon: Icons.rule_folder_outlined,
-              title: 'Tester Instructions',
-              subtitle: 'Known limits and the flows testers should try.',
-              onTap: () => _showTesterInstructions(context),
-            ),
-            const SizedBox(height: 10),
-            _SettingsTile(
-              key: const Key('tester-quick-start-button'),
-              icon: Icons.playlist_add_check_circle_outlined,
-              title: 'Tester Quick Start',
-              subtitle: 'A short first-test path for new beta testers.',
-              onTap: () => _showTesterQuickStart(context),
             ),
             const SizedBox(height: 10),
             _SettingsTile(
@@ -2315,7 +2319,7 @@ class _VersionBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'A clearer first-test path for new beta testers.',
+                  'Beta tools are grouped so testers see the right actions first.',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: const Color(0xFF647B7A),
                   ),

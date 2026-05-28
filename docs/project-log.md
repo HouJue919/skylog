@@ -158,6 +158,11 @@ This will help turn the project into a strong long-term portfolio story.
 - Added a Profile entry for Tester Quick Start.
 - Added `docs/tester-quick-start.md` for the first-test path.
 - Added a widget test for opening the tester quick start dialog.
+- Started SkyLog v2.3 as an organized beta profile milestone.
+- Updated the current app version label to `SkyLog v2.3`.
+- Reorganized Profile beta tools into Beta Testing, Project Info, and Release
+  Tools.
+- Added a widget test check for the new Profile beta sections.
 
 ### Reflection
 
@@ -208,10 +213,12 @@ should be recorded before more features are added. SkyLog v2.1 improves the
 release workflow by making stable pushes to `main` automatically update the
 fixed beta website after the local checks pass. SkyLog v2.2 makes the first
 tester experience clearer by giving new beta testers a short path to follow
-before they send feedback.
+before they send feedback. SkyLog v2.3 reduces Profile clutter by grouping beta
+tools around what testers need first and what release/developer tools can stay
+later.
 
 ### Next Step
 
 - Share the fixed beta link with a small first group.
 - Record tester feedback in the project log.
-- Use feedback to decide the v2.3 fixes before adding major new features.
+- Use feedback to decide the v2.4 fixes before adding major new features.

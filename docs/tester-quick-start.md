@@ -1,6 +1,6 @@
 # SkyLog Tester Quick Start
 
-SkyLog v2.2 adds a short first-test path for people opening the beta link for
+SkyLog v2.3 keeps a short first-test path for people opening the beta link for
 the first time.
 
 ## Live Beta

@@ -5,6 +5,8 @@ Use this checklist before sharing SkyLog with any outside tester.
 ## App State
 
 - Confirm the app shows the current version and stage in Profile.
+- Confirm Profile groups beta tools into Beta Testing, Project Info, and
+  Release Tools.
 - Confirm Automatic Web Deploy explains the release flow.
 - Open Tester Quick Start in Profile.
 - Reset demo data or create clean test records.

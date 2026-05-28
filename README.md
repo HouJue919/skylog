@@ -54,7 +54,7 @@ searchable, reviewable creative records.
 
 ## Current Stage
 
-SkyLog v2.2: Tester Quick Start.
+SkyLog v2.3: Organized Beta Profile.
 
 The app currently supports:
 
@@ -76,7 +76,8 @@ The app currently supports:
 16. Small beta feedback plan
 17. Automatic web deployment after stable pushes
 18. Tester quick start
-19. Early tester guide and feedback materials
+19. Organized beta profile sections
+20. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -96,7 +97,8 @@ tester needs before using it.
 - v2.0: small-group feedback plan for the first fixed-link beta testers.
 - v2.1: automatic GitHub Pages deployment after stable pushes to main.
 - v2.2: short first-test path for new beta testers.
-- v2.3 next: feedback-driven fixes and public-facing polish before wider
+- v2.3: Profile beta tools grouped into tester, project, and release sections.
+- v2.4 next: feedback-driven fixes and public-facing polish before wider
   sharing.
 
 ## Running The App

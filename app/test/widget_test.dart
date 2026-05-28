@@ -43,8 +43,39 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v2.2'), findsOneWidget);
-    expect(find.text('Tester Quick Start'), findsOneWidget);
+    expect(find.text('SkyLog v2.3'), findsOneWidget);
+    expect(find.text('Organized Beta Profile'), findsOneWidget);
+  });
+
+  testWidgets('profile groups beta tools by audience', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.text('Beta Testing'),
+      80,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Beta Testing'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Project Info'),
+      80,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Project Info'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Release Tools'),
+      80,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Release Tools'), findsOneWidget);
   });
 
   testWidgets('profile explains beta status and local data privacy', (

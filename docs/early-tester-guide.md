@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v2.2 - Tester Quick Start
+SkyLog v2.3 - Organized Beta Profile
 
 This is a private beta testing version. It is not a public release yet.
 
