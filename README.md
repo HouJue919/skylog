@@ -1,14 +1,28 @@
 # SkyLog
 
-SkyLog is a long-term student app project for drone pilots and aerial creators.
-It helps users turn each drone flight into a structured record with location,
-date, duration, weather, drone model, media, and personal reflection.
+SkyLog is a long-term student portfolio app project by **HouJue** for drone
+pilots and aerial creators. It helps users turn each drone flight into a
+structured record with location, date, duration, weather, drone model, media,
+and personal reflection.
+
+Live beta:
+
+```text
+https://houjue919.github.io/skylog/
+```
+
+This repository is public so the project can be reviewed as a student software
+engineering and product design portfolio. It is not an open-source commercial
+project.
 
 ## Project Goal
 
 The first version of SkyLog will be a local-first mobile app. Users should be
 able to create, view, edit, and export flight records without requiring an
 account, cloud sync, or network connection.
+
+The long-term goal is to show a real product iteration process: research,
+prototype, implementation, testing, deployment, feedback, and improvement.
 
 ## Why This Project Matters
 
@@ -64,6 +78,21 @@ The app currently supports:
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
 
+## Version Roadmap
+
+- v0.1-v0.4: basic app structure, add flow, local records, detail view, and
+  validation.
+- v0.5-v0.9: early tester preparation, search, edit, dashboard polish, and JSON
+  export.
+- v1.0: first local-first MVP.
+- v1.1-v1.3: portfolio polish, pre-flight checklist, and checklist status saved
+  into flight records.
+- v1.4-v1.8: beta trust, privacy notes, tester instructions, release checklist,
+  and web deployment readiness.
+- v1.9: fixed GitHub Pages beta path.
+- v2.0 next: small-group feedback, bug fixes, and public-facing polish before
+  wider sharing.
+
 ## Running The App
 
 Open this folder in VS Code:
@@ -93,6 +122,17 @@ between debug sessions.
 - `docs/version-learning-notes-cn.md`: Chinese learning notes by version
 - `docs/v1-checklist.md`: v1.0 completion checklist
 - `portfolio/checklist.md`: portfolio and application preparation checklist
+
+## Authorship And License
+
+SkyLog was created by **HouJue** as a student portfolio project.
+
+The code and project materials are visible for review and educational reference,
+but they may not be copied, redistributed, used commercially, or submitted as
+someone else's work without permission. See `LICENSE` for details.
+
+The Git commit history is intentionally preserved to show the project process
+over time.
 
 ## Repository Structure
 

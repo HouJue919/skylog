@@ -1,0 +1,33 @@
+SkyLog Student Portfolio License
+
+Copyright (c) 2026 HouJue
+
+All rights reserved.
+
+SkyLog is a student portfolio project created by HouJue. The source code,
+documentation, screenshots, product materials, and project concept are provided
+publicly for portfolio review, learning reflection, and non-commercial viewing.
+
+You may:
+
+- View the repository and deployed demo.
+- Read the code and documentation for educational reference.
+- Share links to the project with attribution to HouJue.
+
+You may not, without prior written permission from HouJue:
+
+- Copy, redistribute, or publish substantial portions of the project.
+- Use the project, code, design, documentation, screenshots, or product concept
+  for commercial purposes.
+- Submit this project, or a close derivative of it, as your own academic,
+  portfolio, application, competition, or professional work.
+- Remove or obscure attribution to HouJue.
+- Sell, sublicense, or package this project as a product or service.
+
+This project is provided "as is", without warranty of any kind. SkyLog is not a
+flight control app, official aviation safety tool, or replacement for local
+drone regulations and normal flight safety practices.
+
+For permission requests, contact HouJue through the project repository:
+
+https://github.com/HouJue919/skylog
