@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v2.1';
-const String _appStageLabel = 'Automatic Web Deploy';
+const String _appVersionLabel = 'SkyLog v2.2';
+const String _appStageLabel = 'Tester Quick Start';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -1121,6 +1121,43 @@ If the app looks messy, use Reset Demo Data in Profile.
     );
   }
 
+  Future<void> _showTesterQuickStart(BuildContext context) async {
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Tester Quick Start'),
+          content: SingleChildScrollView(
+            child: Text(
+              '''
+Start here if this is your first time testing SkyLog.
+
+60-second test:
+
+1. Open Home and check if the purpose is clear.
+2. Open Checklist and complete the six items.
+3. Open Add and create one sample flight.
+4. Open Logs and find the sample flight.
+5. Open Detail and check if the saved checklist status makes sense.
+6. Return to Profile and copy the feedback template.
+
+Please use sample data only. SkyLog stores records locally in this browser and is not a flight control or official safety app.
+'''
+                  .trim(),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _showDeploymentReadiness(BuildContext context) async {
     await showDialog<void>(
       context: context,
@@ -1362,6 +1399,14 @@ Important:
               title: 'Tester Instructions',
               subtitle: 'Known limits and the flows testers should try.',
               onTap: () => _showTesterInstructions(context),
+            ),
+            const SizedBox(height: 10),
+            _SettingsTile(
+              key: const Key('tester-quick-start-button'),
+              icon: Icons.playlist_add_check_circle_outlined,
+              title: 'Tester Quick Start',
+              subtitle: 'A short first-test path for new beta testers.',
+              onTap: () => _showTesterQuickStart(context),
             ),
             const SizedBox(height: 10),
             _SettingsTile(
@@ -2270,7 +2315,7 @@ class _VersionBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Stable main-branch updates now deploy to the beta web link.',
+                  'A clearer first-test path for new beta testers.',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: const Color(0xFF647B7A),
                   ),

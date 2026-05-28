@@ -153,6 +153,11 @@ This will help turn the project into a strong long-term portfolio story.
 - Added a Profile entry for Automatic Web Deploy.
 - Added `docs/automatic-web-deploy.md` to document the stable release flow.
 - Added a widget test for opening the automatic web deploy dialog.
+- Started SkyLog v2.2 as a tester quick start milestone.
+- Updated the current app version label to `SkyLog v2.2`.
+- Added a Profile entry for Tester Quick Start.
+- Added `docs/tester-quick-start.md` for the first-test path.
+- Added a widget test for opening the tester quick start dialog.
 
 ### Reflection
 
@@ -201,10 +206,12 @@ limited to a small trusted tester group. SkyLog v2.0 begins the feedback stage:
 the app now guides who should test, what they should try, and how feedback
 should be recorded before more features are added. SkyLog v2.1 improves the
 release workflow by making stable pushes to `main` automatically update the
-fixed beta website after the local checks pass.
+fixed beta website after the local checks pass. SkyLog v2.2 makes the first
+tester experience clearer by giving new beta testers a short path to follow
+before they send feedback.
 
 ### Next Step
 
 - Share the fixed beta link with a small first group.
 - Record tester feedback in the project log.
-- Use feedback to decide the v2.2 fixes before adding major new features.
+- Use feedback to decide the v2.3 fixes before adding major new features.

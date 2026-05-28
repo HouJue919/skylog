@@ -28,13 +28,14 @@ trust, and usability matter as much as domain expertise.
 Ask each tester to:
 
 1. Open the fixed web link.
-2. Read Tester Instructions in Profile.
-3. Complete the pre-flight checklist.
-4. Add one sample flight record.
-5. Search for the new record in Logs.
-6. Open Detail and review the saved checklist status.
-7. Copy the feedback template from Profile.
-8. Send feedback after testing.
+2. Open Tester Quick Start in Profile.
+3. Read Tester Instructions in Profile.
+4. Complete the pre-flight checklist.
+5. Add one sample flight record.
+6. Search for the new record in Logs.
+7. Open Detail and review the saved checklist status.
+8. Copy the feedback template from Profile.
+9. Send feedback after testing.
 
 ## Feedback To Record
 

@@ -43,8 +43,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v2.1'), findsOneWidget);
-    expect(find.text('Automatic Web Deploy'), findsOneWidget);
+    expect(find.text('SkyLog v2.2'), findsOneWidget);
+    expect(find.text('Tester Quick Start'), findsOneWidget);
   });
 
   testWidgets('profile explains beta status and local data privacy', (
@@ -185,6 +185,30 @@ void main() {
       findsOneWidget,
     );
     expect(find.textContaining('Records stay local'), findsOneWidget);
+  });
+
+  testWidgets('profile opens tester quick start', (WidgetTester tester) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('tester-quick-start-button')),
+      80,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    final quickStartTopLeft = tester.getTopLeft(
+      find.byKey(const Key('tester-quick-start-button')),
+    );
+    await tester.tapAt(quickStartTopLeft + const Offset(120, 32));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Tester Quick Start'), findsWidgets);
+    expect(find.textContaining('60-second test'), findsOneWidget);
+    expect(find.textContaining('Please use sample data only'), findsOneWidget);
   });
 
   testWidgets('profile opens deployment readiness', (

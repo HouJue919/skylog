@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v2.1 - Automatic Web Deploy
+SkyLog v2.2 - Tester Quick Start
 
 This is a private beta testing version. It is not a public release yet.
 
@@ -17,17 +17,18 @@ flight records.
 
 Please try these basic flows:
 
-1. Open the app and review the Home screen.
-2. Go to Checklist and complete the pre-flight checks.
-3. Go to Add and create a new flight record.
-4. Go to Logs and confirm the new record appears.
-5. Tap the flight record and check that checklist status appears in Detail.
-6. Close and reopen the app, then confirm the record is still there.
-7. Delete a test record from Logs.
-8. Try saving with an empty title, location, or duration and check whether the
+1. Open Tester Quick Start in Profile.
+2. Open the app and review the Home screen.
+3. Go to Checklist and complete the pre-flight checks.
+4. Go to Add and create a new flight record.
+5. Go to Logs and confirm the new record appears.
+6. Tap the flight record and check that checklist status appears in Detail.
+7. Close and reopen the app, then confirm the record is still there.
+8. Delete a test record from Logs.
+9. Try saving with an empty title, location, or duration and check whether the
    app explains what is missing.
-9. Go to Profile and copy the feedback template.
-10. Open Tester Instructions and confirm the limits are clear.
+10. Go to Profile and copy the feedback template.
+11. Open Tester Instructions and confirm the limits are clear.
 
 ## Feedback Questions
 
