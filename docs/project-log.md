@@ -140,6 +140,12 @@ This will help turn the project into a strong long-term portfolio story.
 - Added `docs/fixed-web-beta-path.md` to document the first fixed-link beta
   route.
 - Added a widget test for opening the fixed web beta path dialog.
+- Deployed the first fixed GitHub Pages web beta.
+- Started SkyLog v2.0 as a small beta feedback milestone.
+- Updated the current app version label to `SkyLog v2.0`.
+- Added a Profile entry for Small Beta Feedback Plan.
+- Added `docs/small-beta-feedback-plan.md` to define the first feedback process.
+- Added a widget test for opening the small beta feedback plan dialog.
 
 ### Reflection
 
@@ -184,11 +190,12 @@ testers understand what to try, what data to avoid, and what the beta cannot do.
 SkyLog v1.8 verifies that the app can build for Flutter Web and documents the
 checks needed before creating a fixed beta link. SkyLog v1.9 turns that
 readiness into a concrete GitHub Pages route, while keeping the first fixed link
-limited to a small trusted tester group.
+limited to a small trusted tester group. SkyLog v2.0 begins the feedback stage:
+the app now guides who should test, what they should try, and how feedback
+should be recorded before more features are added.
 
 ### Next Step
 
-- Push the project to GitHub when ready.
-- Enable GitHub Pages with GitHub Actions.
-- Run the `Deploy SkyLog Web Beta` workflow.
-- Test the fixed Pages URL before sharing it with 3-5 trusted testers.
+- Share the fixed beta link with a small first group.
+- Record tester feedback in the project log.
+- Use feedback to decide the v2.1 fixes before adding major new features.

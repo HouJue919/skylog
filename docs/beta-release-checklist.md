@@ -39,6 +39,7 @@ Use this checklist before sharing SkyLog with any outside tester.
 ## Feedback
 
 - Open Copy Feedback Template in Profile.
+- Open Small Beta Feedback Plan in Profile.
 - Give the tester the feedback questions after the test.
 - Record useful feedback in `docs/project-log.md`.
 - Decide whether the next version should fix confusion, improve stability, or

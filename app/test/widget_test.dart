@@ -43,8 +43,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v1.9'), findsOneWidget);
-    expect(find.text('Fixed Web Beta Path'), findsOneWidget);
+    expect(find.text('SkyLog v2.0'), findsOneWidget);
+    expect(find.text('Small Beta Feedback'), findsOneWidget);
   });
 
   testWidgets('profile explains beta status and local data privacy', (
@@ -103,6 +103,32 @@ void main() {
 
     expect(find.textContaining('Feedback Template'), findsWidgets);
     expect(find.text('Done'), findsOneWidget);
+  });
+
+  testWidgets('profile opens small beta feedback plan', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('small-beta-feedback-plan-button')),
+      80,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    final feedbackPlanTopLeft = tester.getTopLeft(
+      find.byKey(const Key('small-beta-feedback-plan-button')),
+    );
+    await tester.tapAt(feedbackPlanTopLeft + const Offset(120, 32));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Small Beta Feedback Plan'), findsWidgets);
+    expect(find.textContaining('Goal for v2.0'), findsOneWidget);
+    expect(find.textContaining('2-3 regular users'), findsOneWidget);
   });
 
   testWidgets('profile opens beta release checklist', (

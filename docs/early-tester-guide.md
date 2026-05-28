@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v1.9 - Fixed Web Beta Path
+SkyLog v2.0 - Small Beta Feedback
 
 This is a private beta testing version. It is not a public release yet.
 

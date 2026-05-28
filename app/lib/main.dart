@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v1.9';
-const String _appStageLabel = 'Fixed Web Beta Path';
+const String _appVersionLabel = 'SkyLog v2.0';
+const String _appStageLabel = 'Small Beta Feedback';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -1199,6 +1199,51 @@ Important:
     );
   }
 
+  Future<void> _showSmallBetaFeedbackPlan(BuildContext context) async {
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Small Beta Feedback Plan'),
+          content: SingleChildScrollView(
+            child: Text(
+              '''
+Goal for v2.0:
+
+Use the fixed SkyLog link to collect clear feedback from a small first group.
+
+Who to ask:
+
+- 2-3 regular users who can judge clarity and usability.
+- 1-2 people interested in drones, photography, travel, or creative records.
+
+What to ask them to test:
+
+1. Open the fixed web link.
+2. Read Tester Instructions.
+3. Complete the checklist.
+4. Add one sample flight.
+5. Search for it in Logs.
+6. Open Detail and review the saved checklist status.
+7. Copy the feedback template.
+
+Record feedback after each test in the project log before changing features.
+'''
+                  .trim(),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1251,6 +1296,14 @@ Important:
               title: 'Copy Feedback Template',
               subtitle: 'Give testers clear questions after they try SkyLog.',
               onTap: () => _copyFeedbackTemplate(context),
+            ),
+            const SizedBox(height: 10),
+            _SettingsTile(
+              key: const Key('small-beta-feedback-plan-button'),
+              icon: Icons.groups_2_outlined,
+              title: 'Small Beta Feedback Plan',
+              subtitle: 'Who should test v2.0 and what they should try.',
+              onTap: () => _showSmallBetaFeedbackPlan(context),
             ),
             const SizedBox(height: 10),
             _SettingsTile(
@@ -2167,7 +2220,7 @@ class _VersionBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Preparing a controlled fixed web beta link for a small tester group.',
+                  'Collecting focused feedback from the first small beta group.',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: const Color(0xFF647B7A),
                   ),

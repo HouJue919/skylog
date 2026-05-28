@@ -44,6 +44,7 @@ The GitHub Pages workflow lives in:
 - Open Beta Release Checklist.
 - Open Deployment Readiness.
 - Open Fixed Web Beta Path.
+- Open Small Beta Feedback Plan.
 - Complete the pre-flight checklist.
 - Add a flight record.
 - Confirm the record appears in Logs.
