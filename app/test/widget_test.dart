@@ -43,8 +43,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v2.3'), findsOneWidget);
-    expect(find.text('Organized Beta Profile'), findsOneWidget);
+    expect(find.text('SkyLog v2.4'), findsOneWidget);
+    expect(find.text('Web Update Guidance'), findsOneWidget);
   });
 
   testWidgets('profile groups beta tools by audience', (
@@ -240,6 +240,30 @@ void main() {
     expect(find.text('Tester Quick Start'), findsWidgets);
     expect(find.textContaining('60-second test'), findsOneWidget);
     expect(find.textContaining('Please use sample data only'), findsOneWidget);
+  });
+
+  testWidgets('profile opens web update tips', (WidgetTester tester) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('web-update-tips-button')),
+      80,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    final updateTipsTopLeft = tester.getTopLeft(
+      find.byKey(const Key('web-update-tips-button')),
+    );
+    await tester.tapAt(updateTipsTopLeft + const Offset(120, 32));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Web Update Tips'), findsWidgets);
+    expect(find.textContaining('private/incognito window'), findsOneWidget);
+    expect(find.textContaining('browsers may keep'), findsOneWidget);
   });
 
   testWidgets('profile opens deployment readiness', (

@@ -54,7 +54,7 @@ searchable, reviewable creative records.
 
 ## Current Stage
 
-SkyLog v2.3: Organized Beta Profile.
+SkyLog v2.4: Web Update Guidance.
 
 The app currently supports:
 
@@ -77,7 +77,8 @@ The app currently supports:
 17. Automatic web deployment after stable pushes
 18. Tester quick start
 19. Organized beta profile sections
-20. Early tester guide and feedback materials
+20. Web update guidance for cached beta links
+21. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -98,7 +99,8 @@ tester needs before using it.
 - v2.1: automatic GitHub Pages deployment after stable pushes to main.
 - v2.2: short first-test path for new beta testers.
 - v2.3: Profile beta tools grouped into tester, project, and release sections.
-- v2.4 next: feedback-driven fixes and public-facing polish before wider
+- v2.4: guidance for testers when browsers cache an older web beta.
+- v2.5 next: feedback-driven fixes and public-facing polish before wider
   sharing.
 
 ## Running The App
@@ -128,6 +130,7 @@ between debug sessions.
 - `docs/automatic-web-deploy.md`: automatic deployment process
 - `docs/small-beta-feedback-plan.md`: v2.0 tester feedback plan
 - `docs/tester-quick-start.md`: first-test path for beta testers
+- `docs/web-update-guidance.md`: what to do if the web beta looks outdated
 - `docs/feedback-form.md`: questions to ask after the demo
 - `docs/project-summary-cn.md`: Chinese project summary
 - `docs/version-learning-notes-cn.md`: Chinese learning notes by version
@@ -156,6 +159,7 @@ docs/
   automatic-web-deploy.md
   small-beta-feedback-plan.md
   tester-quick-start.md
+  web-update-guidance.md
   early-tester-guide.md
   feedback-form.md
   product-overview.md

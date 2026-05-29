@@ -163,6 +163,11 @@ This will help turn the project into a strong long-term portfolio story.
 - Reorganized Profile beta tools into Beta Testing, Project Info, and Release
   Tools.
 - Added a widget test check for the new Profile beta sections.
+- Started SkyLog v2.4 as a web update guidance milestone.
+- Updated the current app version label to `SkyLog v2.4`.
+- Added a Profile entry for Web Update Tips.
+- Added `docs/web-update-guidance.md` to explain browser cache refresh steps.
+- Added a widget test for opening the web update tips dialog.
 
 ### Reflection
 
@@ -215,10 +220,11 @@ fixed beta website after the local checks pass. SkyLog v2.2 makes the first
 tester experience clearer by giving new beta testers a short path to follow
 before they send feedback. SkyLog v2.3 reduces Profile clutter by grouping beta
 tools around what testers need first and what release/developer tools can stay
-later.
+later. SkyLog v2.4 addresses a real deployment issue from testing: browsers can
+cache an older Flutter Web version, so testers now get clear refresh guidance.
 
 ### Next Step
 
 - Share the fixed beta link with a small first group.
 - Record tester feedback in the project log.
-- Use feedback to decide the v2.4 fixes before adding major new features.
+- Use feedback to decide the v2.5 fixes before adding major new features.

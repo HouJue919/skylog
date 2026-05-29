@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v2.3';
-const String _appStageLabel = 'Organized Beta Profile';
+const String _appVersionLabel = 'SkyLog v2.4';
+const String _appStageLabel = 'Web Update Guidance';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -1158,6 +1158,45 @@ Please use sample data only. SkyLog stores records locally in this browser and i
     );
   }
 
+  Future<void> _showWebUpdateTips(BuildContext context) async {
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Web Update Tips'),
+          content: SingleChildScrollView(
+            child: Text(
+              '''
+If SkyLog looks older than expected:
+
+1. Refresh the page.
+2. Open the link in a private/incognito window.
+3. Try a different browser.
+4. If needed, clear this site's browser data and reopen the link.
+
+Why this happens:
+
+SkyLog is a web app, so browsers may keep an older version cached for faster loading.
+
+The fixed link stays the same:
+
+https://houjue919.github.io/skylog/
+'''
+                  .trim(),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _showDeploymentReadiness(BuildContext context) async {
     await showDialog<void>(
       context: context,
@@ -1367,6 +1406,14 @@ Important:
               title: 'Tester Instructions',
               subtitle: 'Known limits and the flows testers should try.',
               onTap: () => _showTesterInstructions(context),
+            ),
+            const SizedBox(height: 10),
+            _SettingsTile(
+              key: const Key('web-update-tips-button'),
+              icon: Icons.refresh_outlined,
+              title: 'Web Update Tips',
+              subtitle: 'What to do if the beta link shows an older version.',
+              onTap: () => _showWebUpdateTips(context),
             ),
             const SizedBox(height: 10),
             _SettingsTile(
@@ -2319,7 +2366,7 @@ class _VersionBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Beta tools are grouped so testers see the right actions first.',
+                  'Helping testers refresh the web beta when browsers cache older versions.',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: const Color(0xFF647B7A),
                   ),

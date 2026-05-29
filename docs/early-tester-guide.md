@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v2.3 - Organized Beta Profile
+SkyLog v2.4 - Web Update Guidance
 
 This is a private beta testing version. It is not a public release yet.
 
@@ -18,17 +18,18 @@ flight records.
 Please try these basic flows:
 
 1. Open Tester Quick Start in Profile.
-2. Open the app and review the Home screen.
-3. Go to Checklist and complete the pre-flight checks.
-4. Go to Add and create a new flight record.
-5. Go to Logs and confirm the new record appears.
-6. Tap the flight record and check that checklist status appears in Detail.
-7. Close and reopen the app, then confirm the record is still there.
-8. Delete a test record from Logs.
-9. Try saving with an empty title, location, or duration and check whether the
+2. Open Web Update Tips if the app appears outdated.
+3. Open the app and review the Home screen.
+4. Go to Checklist and complete the pre-flight checks.
+5. Go to Add and create a new flight record.
+6. Go to Logs and confirm the new record appears.
+7. Tap the flight record and check that checklist status appears in Detail.
+8. Close and reopen the app, then confirm the record is still there.
+9. Delete a test record from Logs.
+10. Try saving with an empty title, location, or duration and check whether the
    app explains what is missing.
-10. Go to Profile and copy the feedback template.
-11. Open Tester Instructions and confirm the limits are clear.
+11. Go to Profile and copy the feedback template.
+12. Open Tester Instructions and confirm the limits are clear.
 
 ## Feedback Questions
 
@@ -50,6 +51,7 @@ Please try these basic flows:
 - Images and videos are not connected yet.
 - JSON export copies a backup to the clipboard.
 - Feedback template copy depends on the device/browser clipboard.
+- Browser caching may show an older version briefly after deployment.
 
 ## Tester Note
 
