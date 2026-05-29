@@ -39,6 +39,7 @@ Use this checklist before sharing SkyLog with any outside tester.
 - Tell the tester there is no account or cloud sync yet.
 - Tell the tester not to enter sensitive or private data during beta testing.
 - Export JSON Backup and confirm the dialog opens.
+- Export CSV Table and confirm the dialog opens.
 
 ## Beta Boundaries
 

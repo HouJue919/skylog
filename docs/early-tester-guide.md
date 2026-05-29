@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v2.9 - Profile Statistics
+SkyLog v3.0 - CSV Export
 
 This is a private beta testing version. It is not a public release yet.
 
@@ -37,8 +37,10 @@ Please try these basic flows:
 15. Try saving with an empty title, location, or duration and check whether the
    app explains what is missing.
 16. Go to Profile and confirm Pilot Stats and My Drones match the test records.
-17. Copy the feedback template.
-18. Open Tester Instructions and confirm the limits are clear.
+17. Export JSON Backup and confirm the dialog opens.
+18. Export CSV Table and confirm the table text opens.
+19. Copy the feedback template.
+20. Open Tester Instructions and confirm the limits are clear.
 
 ## Feedback Questions
 
@@ -59,6 +61,7 @@ Please try these basic flows:
 - SkyLog is not an official safety system.
 - Images and videos are not connected yet.
 - JSON export copies a backup to the clipboard.
+- CSV export copies table-friendly text to the clipboard.
 - Feedback template copy depends on the device/browser clipboard.
 - Browser caching may show an older version briefly after deployment.
 

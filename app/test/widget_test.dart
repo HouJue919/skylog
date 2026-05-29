@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -57,8 +58,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v2.9'), findsOneWidget);
-    expect(find.text('Profile Statistics'), findsOneWidget);
+    expect(find.text('SkyLog v3.0'), findsOneWidget);
+    expect(find.text('CSV Export'), findsOneWidget);
   });
 
   testWidgets('map screen opens mapped flight detail', (
@@ -465,6 +466,46 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.textContaining('JSON Backup'), findsWidgets);
+  });
+
+  testWidgets('profile exports CSV table', (WidgetTester tester) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(SystemChannels.platform, (call) async {
+          if (call.method == 'Clipboard.setData') {
+            return null;
+          }
+          return null;
+        });
+    addTearDown(() {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(SystemChannels.platform, null);
+    });
+
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    final exportCsvButton = find.byKey(const Key('export-csv-button'));
+    await tester.scrollUntilVisible(
+      exportCsvButton,
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    final exportCsvInkWell = tester.widget<InkWell>(
+      find.descendant(of: exportCsvButton, matching: find.byType(InkWell)),
+    );
+    exportCsvInkWell.onTap?.call();
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('CSV Table'), findsWidgets);
+    expect(find.text('CSV rows: 3'), findsOneWidget);
+    expect(
+      find.textContaining('Columns: Title, Location, Latitude'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('new flight saves checklist status and resets checklist', (

@@ -56,10 +56,11 @@ searchable, reviewable creative records.
 - Deployment readiness checks
 - Fixed web beta deployment path
 - JSON backup export copied to clipboard
+- CSV table export copied to clipboard
 
 ## Current Stage
 
-SkyLog v2.9: Profile Statistics.
+SkyLog v3.0: CSV Export.
 
 The app currently supports:
 
@@ -70,25 +71,26 @@ The app currently supports:
 5. Delete flight records
 6. Flight detail page
 7. JSON backup export
-8. Pre-flight checklist with saved progress
-9. Checklist status attached to saved flight records
-10. Creative review fields for purpose, issues, and next improvements
-11. Optional latitude and longitude for map-ready records
-12. Media metadata for type, local path, and caption
-13. Flight Map tab with mapped flight summaries
-14. Profile statistics and drone usage summaries
-15. Beta status and local-data privacy notes
-16. Copyable tester feedback template
-17. Beta release checklist
-18. Known limits and tester instructions
-19. Deployment readiness checks
-20. Fixed web beta deployment path
-21. Small beta feedback plan
-22. Automatic web deployment after stable pushes
-23. Tester quick start
-24. Organized beta profile sections
-25. Web update guidance for cached beta links
-26. Early tester guide and feedback materials
+8. CSV table export
+9. Pre-flight checklist with saved progress
+10. Checklist status attached to saved flight records
+11. Creative review fields for purpose, issues, and next improvements
+12. Optional latitude and longitude for map-ready records
+13. Media metadata for type, local path, and caption
+14. Flight Map tab with mapped flight summaries
+15. Profile statistics and drone usage summaries
+16. Beta status and local-data privacy notes
+17. Copyable tester feedback template
+18. Beta release checklist
+19. Known limits and tester instructions
+20. Deployment readiness checks
+21. Fixed web beta deployment path
+22. Small beta feedback plan
+23. Automatic web deployment after stable pushes
+24. Tester quick start
+25. Organized beta profile sections
+26. Web update guidance for cached beta links
+27. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -116,7 +118,9 @@ tester needs before using it.
 - v2.7: media metadata fields for type, local path, and caption.
 - v2.8: Flight Map tab with mapped flight summaries and detail links.
 - v2.9: Profile statistics and drone usage summaries.
-- v3.0 next: continue Sprint 4 with CSV export or stronger backup reporting.
+- v3.0: CSV table export for spreadsheet review.
+- v3.1 next: continue Sprint 4 with stronger backup reporting or device
+  management.
 - Later: feedback-driven fixes and public-facing polish before wider
   sharing.
 

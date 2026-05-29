@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v2.9';
-const String _appStageLabel = 'Profile Statistics';
+const String _appVersionLabel = 'SkyLog v3.0';
+const String _appStageLabel = 'CSV Export';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -1191,6 +1191,57 @@ class ProfileScreen extends StatelessWidget {
     });
   }
 
+  String _buildExportCsv() {
+    final rows = <List<String>>[
+      [
+        'Title',
+        'Location',
+        'Latitude',
+        'Longitude',
+        'Date',
+        'Duration',
+        'Drone',
+        'Weather',
+        'Media Type',
+        'Media Path',
+        'Media Caption',
+        'Purpose',
+        'Summary',
+        'Issues',
+        'Next Improvements',
+        'Checklist',
+      ],
+      for (final flight in flights)
+        [
+          flight.title,
+          flight.location,
+          flight.latitude?.toStringAsFixed(4) ?? '',
+          flight.longitude?.toStringAsFixed(4) ?? '',
+          flight.date,
+          flight.duration,
+          flight.drone,
+          flight.weather,
+          flight.mediaType,
+          flight.mediaPath,
+          flight.mediaCaption,
+          flight.purpose,
+          flight.summary,
+          flight.issues,
+          flight.improvements,
+          flight.checklistLabel,
+        ],
+    ];
+
+    return rows.map((row) => row.map(_escapeCsvCell).join(',')).join('\n');
+  }
+
+  String _escapeCsvCell(String value) {
+    final shouldQuote =
+        value.contains(',') || value.contains('"') || value.contains('\n');
+    final escapedValue = value.replaceAll('"', '""');
+    return shouldQuote ? '"$escapedValue"' : escapedValue;
+  }
+
   String _buildFeedbackTemplate() {
     return '''
 SkyLog Beta Feedback
@@ -1237,6 +1288,57 @@ Flight records during test: ${flights.length}
               exportJson,
               style: Theme.of(context).textTheme.bodySmall,
             ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _exportCsv(BuildContext context) async {
+    final exportCsv = _buildExportCsv();
+    var copiedToClipboard = true;
+    try {
+      await Clipboard.setData(ClipboardData(text: exportCsv));
+    } catch (_) {
+      copiedToClipboard = false;
+    }
+
+    if (!context.mounted) {
+      return;
+    }
+
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            copiedToClipboard ? 'CSV Table Copied' : 'CSV Table Ready',
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('CSV rows: ${flights.length}'),
+              const SizedBox(height: 8),
+              const Text(
+                'Columns: Title, Location, Latitude, Longitude, Date, Duration',
+              ),
+              const SizedBox(height: 12),
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Text(
+                    exportCsv,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+              ),
+            ],
           ),
           actions: [
             TextButton(
@@ -1790,6 +1892,15 @@ Important:
               title: 'Export JSON Backup',
               subtitle: 'Copy ${flights.length} flight records as JSON.',
               onTap: () => _exportJson(context),
+            ),
+            const SizedBox(height: 10),
+            _SettingsTile(
+              key: const Key('export-csv-button'),
+              icon: Icons.table_chart_outlined,
+              title: 'Export CSV Table',
+              subtitle:
+                  'Copy ${flights.length} records for spreadsheet review.',
+              onTap: () => _exportCsv(context),
             ),
             const SizedBox(height: 10),
             _SettingsTile(
