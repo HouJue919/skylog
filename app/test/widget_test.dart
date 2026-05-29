@@ -51,8 +51,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v2.6'), findsOneWidget);
-    expect(find.text('Map Coordinates'), findsOneWidget);
+    expect(find.text('SkyLog v2.7'), findsOneWidget);
+    expect(find.text('Media Metadata'), findsOneWidget);
   });
 
   testWidgets('profile groups beta tools by audience', (
@@ -687,9 +687,77 @@ void main() {
     await tester.tap(find.text('Coordinate test flight'));
     await tester.pumpAndSettle();
 
+    await tester.scrollUntilVisible(
+      find.text('Map Location'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.text('Map Location'), findsOneWidget);
     expect(find.text('Coordinates'), findsOneWidget);
     expect(find.text('36.1234, 120.5678'), findsWidgets);
+  });
+
+  testWidgets('new flight saves media metadata', (WidgetTester tester) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Add'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Title')),
+      'Media test flight',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Location')),
+      'Media beach',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Duration')),
+      '15 min',
+    );
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey<String>('flight-field-Media Type')),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Media Type')),
+      'Video',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Media Path')),
+      'media-beach-orbit.mp4',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Media Caption')),
+      'Best orbit clip for editing later.',
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('Save Flight'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await saveFlight(tester);
+
+    expect(find.text('Media test flight'), findsOneWidget);
+    expect(find.text('Video - media-beach-orbit.mp4'), findsWidgets);
+
+    await tester.tap(find.text('Media test flight'));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.text('Media'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Type'), findsOneWidget);
+    expect(find.text('Video'), findsWidgets);
+    expect(find.text('Path'), findsOneWidget);
+    expect(find.text('media-beach-orbit.mp4'), findsOneWidget);
+    expect(find.text('Caption'), findsOneWidget);
+    expect(find.text('Best orbit clip for editing later.'), findsOneWidget);
   });
 
   testWidgets('add flight form resets after saving', (
@@ -781,6 +849,12 @@ void main() {
 
     expect(find.text('Flight Detail'), findsOneWidget);
     expect(find.text('Flight Data'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Map Location'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.text('Map Location'), findsOneWidget);
     expect(find.text('36.0671, 120.3826'), findsWidgets);
 

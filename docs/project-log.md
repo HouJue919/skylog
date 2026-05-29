@@ -180,6 +180,13 @@ This will help turn the project into a strong long-term portfolio story.
 - Add Flight can now save map-ready coordinates.
 - Flight Detail now shows a coordinate label and map-style preview.
 - Added a widget test for saving and reviewing flight coordinates.
+- Started SkyLog v2.7 as a media metadata milestone from Sprint 3.
+- Updated the current app version label to `SkyLog v2.7`.
+- Added media type, media path, and media caption fields to `FlightRecord`.
+- Add Flight can now save basic media metadata without cloud upload.
+- Flight Detail now shows a media section and placeholder preview.
+- Included media metadata in search and JSON backup export.
+- Added a widget test for saving and reviewing media metadata.
 
 ### Reflection
 
@@ -238,9 +245,11 @@ SkyLog v2.5 returns to product depth by helping pilots record why a flight
 happened, what went wrong, and what they should improve next.
 SkyLog v2.6 begins the original Sprint 3 map work by saving coordinates before
 adding a full map provider.
+SkyLog v2.7 continues Sprint 3 by linking flight records to media notes without
+taking on photo permissions, file copying, or cloud upload yet.
 
 ### Next Step
 
-- Continue Sprint 3 with media placeholders or a richer map view.
-- Keep coordinate input optional so testers do not need exact GPS data.
-- Use feedback to decide whether coordinates are understandable enough.
+- Continue Sprint 3 with a richer map view or media gallery polish.
+- Keep media metadata local and optional during beta testing.
+- Use feedback to decide whether typed media paths are understandable enough.

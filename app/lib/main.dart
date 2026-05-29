@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v2.6';
-const String _appStageLabel = 'Map Coordinates';
+const String _appVersionLabel = 'SkyLog v2.7';
+const String _appStageLabel = 'Media Metadata';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -29,6 +29,9 @@ class FlightRecord {
     required this.duration,
     required this.drone,
     required this.weather,
+    required this.mediaType,
+    required this.mediaPath,
+    required this.mediaCaption,
     required this.purpose,
     required this.summary,
     required this.issues,
@@ -45,6 +48,9 @@ class FlightRecord {
   final String duration;
   final String drone;
   final String weather;
+  final String mediaType;
+  final String mediaPath;
+  final String mediaCaption;
   final String purpose;
   final String summary;
   final String issues;
@@ -76,6 +82,21 @@ class FlightRecord {
     return '${latitude!.toStringAsFixed(4)}, ${longitude!.toStringAsFixed(4)}';
   }
 
+  bool get hasMedia {
+    return mediaPath.isNotEmpty || mediaCaption.isNotEmpty;
+  }
+
+  String get mediaLabel {
+    if (!hasMedia) {
+      return 'No media linked';
+    }
+    if (mediaPath.isEmpty) {
+      return mediaType;
+    }
+
+    return '$mediaType - $mediaPath';
+  }
+
   Map<String, Object?> toJson() {
     return {
       'title': title,
@@ -86,6 +107,9 @@ class FlightRecord {
       'duration': duration,
       'drone': drone,
       'weather': weather,
+      'mediaType': mediaType,
+      'mediaPath': mediaPath,
+      'mediaCaption': mediaCaption,
       'purpose': purpose,
       'summary': summary,
       'issues': issues,
@@ -105,6 +129,9 @@ class FlightRecord {
       duration: json['duration'] as String? ?? '',
       drone: json['drone'] as String? ?? '',
       weather: json['weather'] as String? ?? '',
+      mediaType: json['mediaType'] as String? ?? 'Photo',
+      mediaPath: json['mediaPath'] as String? ?? '',
+      mediaCaption: json['mediaCaption'] as String? ?? '',
       purpose: json['purpose'] as String? ?? '',
       summary: json['summary'] as String? ?? '',
       issues: json['issues'] as String? ?? '',
@@ -137,6 +164,9 @@ List<FlightRecord> _demoFlights() {
       duration: '24 min',
       drone: 'DJI Mini 4 Pro',
       weather: 'Cloudy - Wind level 4',
+      mediaType: 'Video',
+      mediaPath: 'coastal-sunset-orbit.mp4',
+      mediaCaption: 'Best clip is the low coastal tracking shot.',
       purpose: 'Practice smooth coastal tracking shots for a short reel.',
       checklistCompleted: 6,
       checklistTotal: 6,
@@ -154,6 +184,9 @@ List<FlightRecord> _demoFlights() {
       duration: '18 min',
       drone: 'DJI Mini 4 Pro',
       weather: 'Sunny - Light wind',
+      mediaType: 'Photo',
+      mediaPath: 'mountain-overlook-cover.jpg',
+      mediaCaption: 'Wide establishing frame for the flight cover.',
       purpose: 'Test a wide opening shot from a safe overlook.',
       checklistCompleted: 6,
       checklistTotal: 6,
@@ -170,6 +203,9 @@ List<FlightRecord> _demoFlights() {
       duration: '31 min',
       drone: 'DJI Mini 3',
       weather: 'Cloudy - Calm',
+      mediaType: 'Cover',
+      mediaPath: 'park-reveal-cover.jpg',
+      mediaCaption: 'Simple cover frame for framing practice.',
       purpose: 'Improve framing and slow reveal timing in an open field.',
       checklistCompleted: 5,
       checklistTotal: 6,
@@ -567,6 +603,9 @@ class _FlightLogScreenState extends State<FlightLogScreen> {
         flight.duration,
         flight.drone,
         flight.weather,
+        flight.mediaType,
+        flight.mediaPath,
+        flight.mediaCaption,
         flight.purpose,
         flight.summary,
         flight.issues,
@@ -648,6 +687,13 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
   final _weatherController = TextEditingController(
     text: 'Cloudy - Wind level 4',
   );
+  final _mediaTypeController = TextEditingController(text: 'Video');
+  final _mediaPathController = TextEditingController(
+    text: 'coastal-sunset-orbit.mp4',
+  );
+  final _mediaCaptionController = TextEditingController(
+    text: 'Best clip is the low coastal tracking shot.',
+  );
   final _purposeController = TextEditingController(
     text: 'Practice smooth coastal tracking shots for a short reel.',
   );
@@ -672,6 +718,9 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
     _durationController.dispose();
     _droneController.dispose();
     _weatherController.dispose();
+    _mediaTypeController.dispose();
+    _mediaPathController.dispose();
+    _mediaCaptionController.dispose();
     _purposeController.dispose();
     _summaryController.dispose();
     _issuesController.dispose();
@@ -695,6 +744,9 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
         duration: _durationController.text.trim(),
         drone: _droneController.text.trim(),
         weather: _weatherController.text.trim(),
+        mediaType: _mediaTypeController.text.trim(),
+        mediaPath: _mediaPathController.text.trim(),
+        mediaCaption: _mediaCaptionController.text.trim(),
         purpose: _purposeController.text.trim(),
         summary: _summaryController.text.trim(),
         issues: _issuesController.text.trim(),
@@ -715,6 +767,9 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
     _durationController.clear();
     _droneController.text = 'DJI Mini 4 Pro';
     _weatherController.clear();
+    _mediaTypeController.text = 'Photo';
+    _mediaPathController.clear();
+    _mediaCaptionController.clear();
     _purposeController.clear();
     _summaryController.clear();
     _issuesController.clear();
@@ -804,6 +859,24 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
                 _FlightTextField(
                   label: 'Weather',
                   controller: _weatherController,
+                ),
+                const SizedBox(height: 18),
+                const _FormSectionTitle('Media Metadata'),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Media Type',
+                  controller: _mediaTypeController,
+                ),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Media Path',
+                  controller: _mediaPathController,
+                ),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Media Caption',
+                  controller: _mediaCaptionController,
+                  maxLines: 2,
                 ),
                 const SizedBox(height: 18),
                 const _FormSectionTitle('Creative Review'),
@@ -1974,6 +2047,11 @@ class _FlightLogCard extends StatelessWidget {
                   _InfoChip(icon: Icons.timer_outlined, label: flight.duration),
                   _InfoChip(icon: Icons.flight, label: flight.drone),
                   _InfoChip(icon: Icons.cloud_outlined, label: flight.weather),
+                  if (flight.hasMedia)
+                    _InfoChip(
+                      icon: Icons.perm_media_outlined,
+                      label: flight.mediaLabel,
+                    ),
                   if (flight.purpose.isNotEmpty)
                     _InfoChip(icon: Icons.flag_outlined, label: flight.purpose),
                   _InfoChip(
@@ -2025,6 +2103,9 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
   late final TextEditingController _durationController;
   late final TextEditingController _droneController;
   late final TextEditingController _weatherController;
+  late final TextEditingController _mediaTypeController;
+  late final TextEditingController _mediaPathController;
+  late final TextEditingController _mediaCaptionController;
   late final TextEditingController _purposeController;
   late final TextEditingController _summaryController;
   late final TextEditingController _issuesController;
@@ -2046,6 +2127,9 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
     _durationController = TextEditingController(text: _flight.duration);
     _droneController = TextEditingController(text: _flight.drone);
     _weatherController = TextEditingController(text: _flight.weather);
+    _mediaTypeController = TextEditingController(text: _flight.mediaType);
+    _mediaPathController = TextEditingController(text: _flight.mediaPath);
+    _mediaCaptionController = TextEditingController(text: _flight.mediaCaption);
     _purposeController = TextEditingController(text: _flight.purpose);
     _summaryController = TextEditingController(text: _flight.summary);
     _issuesController = TextEditingController(text: _flight.issues);
@@ -2062,6 +2146,9 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
     _durationController.dispose();
     _droneController.dispose();
     _weatherController.dispose();
+    _mediaTypeController.dispose();
+    _mediaPathController.dispose();
+    _mediaCaptionController.dispose();
     _purposeController.dispose();
     _summaryController.dispose();
     _issuesController.dispose();
@@ -2079,6 +2166,9 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
       duration: _durationController.text.trim(),
       drone: _droneController.text.trim(),
       weather: _weatherController.text.trim(),
+      mediaType: _mediaTypeController.text.trim(),
+      mediaPath: _mediaPathController.text.trim(),
+      mediaCaption: _mediaCaptionController.text.trim(),
       purpose: _purposeController.text.trim(),
       summary: _summaryController.text.trim(),
       issues: _issuesController.text.trim(),
@@ -2189,6 +2279,35 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
                     : 'Not fully checked',
               ),
             ],
+          ),
+          const SizedBox(height: 16),
+          _DetailSection(
+            title: 'Media',
+            children: _isEditing
+                ? [
+                    _FlightTextField(
+                      label: 'Media Type',
+                      controller: _mediaTypeController,
+                    ),
+                    const SizedBox(height: 10),
+                    _FlightTextField(
+                      label: 'Media Path',
+                      controller: _mediaPathController,
+                    ),
+                    const SizedBox(height: 10),
+                    _FlightTextField(
+                      label: 'Media Caption',
+                      controller: _mediaCaptionController,
+                      maxLines: 3,
+                    ),
+                  ]
+                : [
+                    _DetailRow(label: 'Type', value: _flight.mediaType),
+                    _DetailRow(label: 'Path', value: _flight.mediaPath),
+                    _DetailRow(label: 'Caption', value: _flight.mediaCaption),
+                    const SizedBox(height: 12),
+                    _MediaPreview(flight: _flight),
+                  ],
           ),
           const SizedBox(height: 16),
           _DetailSection(
@@ -2425,6 +2544,47 @@ class _SmallMapPreview extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _MediaPreview extends StatelessWidget {
+  const _MediaPreview({required this.flight});
+
+  final FlightRecord flight;
+
+  @override
+  Widget build(BuildContext context) {
+    final hasMedia = flight.hasMedia;
+
+    return Container(
+      height: 116,
+      decoration: BoxDecoration(
+        color: const Color(0xFFEAF4F1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFFC9DCD8)),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              hasMedia ? Icons.perm_media_outlined : Icons.image_not_supported,
+              color: const Color(0xFF1D7373),
+              size: 34,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              hasMedia ? flight.mediaLabel : 'No media metadata yet',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: const Color(0xFF123737),
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

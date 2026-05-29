@@ -46,6 +46,7 @@ searchable, reviewable creative records.
 - Checklist completion saved into new flight records
 - Creative review fields for flight purpose, issues, and next improvements
 - Optional latitude and longitude saved with flight records
+- Media metadata fields for type, local path, and caption
 - Beta status and local-data privacy notes
 - Copyable tester feedback template
 - Beta release checklist
@@ -56,7 +57,7 @@ searchable, reviewable creative records.
 
 ## Current Stage
 
-SkyLog v2.6: Map Coordinates.
+SkyLog v2.7: Media Metadata.
 
 The app currently supports:
 
@@ -71,18 +72,19 @@ The app currently supports:
 9. Checklist status attached to saved flight records
 10. Creative review fields for purpose, issues, and next improvements
 11. Optional latitude and longitude for map-ready records
-12. Beta status and local-data privacy notes
-13. Copyable tester feedback template
-14. Beta release checklist
-15. Known limits and tester instructions
-16. Deployment readiness checks
-17. Fixed web beta deployment path
-18. Small beta feedback plan
-19. Automatic web deployment after stable pushes
-20. Tester quick start
-21. Organized beta profile sections
-22. Web update guidance for cached beta links
-23. Early tester guide and feedback materials
+12. Media metadata for type, local path, and caption
+13. Beta status and local-data privacy notes
+14. Copyable tester feedback template
+15. Beta release checklist
+16. Known limits and tester instructions
+17. Deployment readiness checks
+18. Fixed web beta deployment path
+19. Small beta feedback plan
+20. Automatic web deployment after stable pushes
+21. Tester quick start
+22. Organized beta profile sections
+23. Web update guidance for cached beta links
+24. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -107,7 +109,8 @@ tester needs before using it.
 - v2.5: creative review fields for flight purpose, issues, and next
   improvements.
 - v2.6: optional latitude and longitude fields for map-ready flight records.
-- v2.7 next: continue Sprint 3 with media placeholders or a richer map view.
+- v2.7: media metadata fields for type, local path, and caption.
+- v2.8 next: continue Sprint 3 with a richer map view or media gallery polish.
 - Later: feedback-driven fixes and public-facing polish before wider
   sharing.
 

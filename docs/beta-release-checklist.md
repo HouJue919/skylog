@@ -23,6 +23,7 @@ Use this checklist before sharing SkyLog with any outside tester.
 - Confirm checklist status is saved in the detail page.
 - Confirm coordinates appear in the detail page when latitude and longitude are
   provided.
+- Confirm media type, path, and caption appear in the detail page when provided.
 - Confirm Purpose, Issues, and Next Improvements appear in the detail page.
 - Edit the flight and confirm Logs updates.
 - Delete a test flight and confirm it disappears.

@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v2.6 - Map Coordinates
+SkyLog v2.7 - Media Metadata
 
 This is a private beta testing version. It is not a public release yet.
 
@@ -10,8 +10,9 @@ This is a private beta testing version. It is not a public release yet.
 
 SkyLog helps drone pilots check basic pre-flight items and record each flight
 with location, optional map coordinates, date, duration, drone model, weather,
-checklist status, and a short creative review. The goal is to turn scattered
-flight memories into searchable flight records and clear improvement notes.
+media notes, checklist status, and a short creative review. The goal is to turn
+scattered flight memories into searchable flight records and clear improvement
+notes.
 
 ## What To Test
 
@@ -23,16 +24,18 @@ Please try these basic flows:
 4. Go to Checklist and complete the pre-flight checks.
 5. Go to Add and create a new flight record.
 6. Fill in Latitude and Longitude if you want to test map-ready records.
-7. Fill in Purpose, Issues, and Next Improvements if you have time.
-8. Go to Logs and confirm the new record appears.
-9. Tap the flight record and check that checklist status, coordinates, and
-   creative review notes appear in Detail.
-10. Close and reopen the app, then confirm the record is still there.
-11. Delete a test record from Logs.
-12. Try saving with an empty title, location, or duration and check whether the
+7. Fill in Media Type, Media Path, and Media Caption if you have a sample clip
+   or photo name.
+8. Fill in Purpose, Issues, and Next Improvements if you have time.
+9. Go to Logs and confirm the new record appears.
+10. Tap the flight record and check that checklist status, coordinates, media
+   notes, and creative review notes appear in Detail.
+11. Close and reopen the app, then confirm the record is still there.
+12. Delete a test record from Logs.
+13. Try saving with an empty title, location, or duration and check whether the
    app explains what is missing.
-13. Go to Profile and copy the feedback template.
-14. Open Tester Instructions and confirm the limits are clear.
+14. Go to Profile and copy the feedback template.
+15. Open Tester Instructions and confirm the limits are clear.
 
 ## Feedback Questions
 
