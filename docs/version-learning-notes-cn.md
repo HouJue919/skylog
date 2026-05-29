@@ -753,3 +753,17 @@ SkyLog 到 v3.2 已经覆盖了一个真实 App 的基础开发流程：
 - 开始 3-5 人小范围测试
 - 关闭 Sprint 4，准备 Sprint 5
 - 后续再决定是否给无人机设备做独立编辑页面
+
+## Sprint 4 结束检查点
+
+Sprint 4 对应统计、设备和备份。到 v3.2 为止，这一阶段已经基本闭环。
+
+更详细的学习总结在：
+
+- `docs/sprint-4-wrap-up-cn.md`
+
+Sprint 5 会进入 AI 和数据增强，但不会马上把真实 API 接进 App。下一阶段应该先做 AI readiness 和 prompt preview，把隐私、成本、失败处理和数据边界想清楚。
+
+Sprint 5 计划在：
+
+- `docs/sprint-5-plan-cn.md`

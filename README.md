@@ -162,6 +162,8 @@ between debug sessions.
 - `docs/feedback-form.md`: questions to ask after the demo
 - `docs/project-summary-cn.md`: Chinese project summary
 - `docs/version-learning-notes-cn.md`: Chinese learning notes by version
+- `docs/sprint-4-wrap-up-cn.md`: Sprint 4 learning wrap-up
+- `docs/sprint-5-plan-cn.md`: Sprint 5 AI and data enhancement plan
 - `docs/v1-checklist.md`: v1.0 completion checklist
 - `portfolio/checklist.md`: portfolio and application preparation checklist
 
