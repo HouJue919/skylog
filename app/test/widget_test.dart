@@ -58,8 +58,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v3.0'), findsOneWidget);
-    expect(find.text('CSV Export'), findsOneWidget);
+    expect(find.text('SkyLog v3.1'), findsOneWidget);
+    expect(find.text('Device Profiles'), findsOneWidget);
   });
 
   testWidgets('map screen opens mapped flight detail', (
@@ -138,9 +138,12 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(find.text('DJI Mini 4 Pro'), findsWidgets);
-    expect(find.text('2 flights'), findsOneWidget);
+    expect(find.text('2 flights - 42m total'), findsOneWidget);
+    expect(find.text('Latest: May 24, 2026'), findsOneWidget);
+    expect(find.text('2 mapped'), findsOneWidget);
+    expect(find.text('2 media'), findsOneWidget);
     expect(find.text('DJI Mini 3'), findsOneWidget);
-    expect(find.text('1 flight'), findsOneWidget);
+    expect(find.text('1 flight - 31m total'), findsOneWidget);
   });
 
   testWidgets('profile explains beta status and local data privacy', (

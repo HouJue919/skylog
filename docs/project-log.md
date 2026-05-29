@@ -205,6 +205,12 @@ This will help turn the project into a strong long-term portfolio story.
 - CSV export includes flight basics, coordinates, drone, weather, media, review,
   and checklist fields.
 - Added a widget test for opening the CSV export dialog.
+- Started SkyLog v3.1 as a device profile milestone from Sprint 4.
+- Updated the current app version label to `SkyLog v3.1`.
+- Upgraded My Drones from simple usage counts to generated device profiles.
+- Device profiles now show flights, total time, latest flight, mapped records,
+  and media records.
+- Added widget test coverage for the richer device profile summaries.
 
 ### Reflection
 
@@ -271,9 +277,13 @@ SkyLog v2.9 begins Sprint 4 by making the Profile page summarize real records
 instead of showing fixed drone examples.
 SkyLog v3.0 adds a spreadsheet-friendly export path so records can be reviewed
 outside the app, not only backed up as JSON.
+SkyLog v3.1 makes the device section more useful by turning drone names into
+small profile summaries generated from real flight records.
 
 ### Next Step
 
-- Continue Sprint 4 with stronger backup reporting or device management.
-- Keep CSV export simple and readable before adding file download flows.
-- Use feedback to decide whether spreadsheet export is useful for testers.
+- Finish Sprint 4 with stronger backup reporting.
+- Keep generated device profiles simple before adding separate editable drone
+  files.
+- Use feedback to decide whether spreadsheet export and device summaries are
+  useful for testers.

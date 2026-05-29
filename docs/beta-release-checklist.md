@@ -40,6 +40,8 @@ Use this checklist before sharing SkyLog with any outside tester.
 - Tell the tester not to enter sensitive or private data during beta testing.
 - Export JSON Backup and confirm the dialog opens.
 - Export CSV Table and confirm the dialog opens.
+- Confirm My Drones shows usage, total time, latest flight, map, and media
+  counts.
 
 ## Beta Boundaries
 

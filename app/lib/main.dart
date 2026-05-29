@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v3.0';
-const String _appStageLabel = 'CSV Export';
+const String _appVersionLabel = 'SkyLog v3.1';
+const String _appStageLabel = 'Device Profiles';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -18,6 +18,11 @@ const List<String> _preFlightChecklistItems = [
   'Return-to-home point confirmed',
   'Storage card has space',
 ];
+
+int _durationMinutesFor(String duration) {
+  final match = RegExp(r'\d+').firstMatch(duration);
+  return match == null ? 0 : int.parse(match.group(0)!);
+}
 
 class FlightRecord {
   const FlightRecord({
@@ -1134,10 +1139,7 @@ class ProfileScreen extends StatelessWidget {
   int get _totalFlightMinutes {
     var total = 0;
     for (final flight in flights) {
-      final match = RegExp(r'\d+').firstMatch(flight.duration);
-      if (match != null) {
-        total += int.parse(match.group(0)!);
-      }
+      total += _durationMinutesFor(flight.duration);
     }
     return total;
   }
@@ -1169,16 +1171,26 @@ class ProfileScreen extends StatelessWidget {
     return sortedEntries.first.key;
   }
 
-  Map<String, int> get _droneCounts {
-    final counts = <String, int>{};
+  List<_DroneProfileSummary> get _droneProfiles {
+    final summaries = <String, _DroneProfileSummary>{};
     for (final flight in flights) {
       final drone = flight.drone.trim();
       if (drone.isEmpty) {
         continue;
       }
-      counts[drone] = (counts[drone] ?? 0) + 1;
+      summaries.putIfAbsent(drone, () => _DroneProfileSummary(model: drone));
+      summaries[drone]!.addFlight(flight);
     }
-    return counts;
+
+    final profiles = summaries.values.toList()
+      ..sort((a, b) {
+        final flightComparison = b.totalFlights.compareTo(a.totalFlights);
+        if (flightComparison != 0) {
+          return flightComparison;
+        }
+        return b.totalMinutes.compareTo(a.totalMinutes);
+      });
+    return profiles;
   }
 
   String _buildExportJson() {
@@ -1788,7 +1800,7 @@ Important:
             const SizedBox(height: 18),
             const _FormSectionTitle('My Drones'),
             const SizedBox(height: 10),
-            _DroneSummaryList(droneCounts: _droneCounts),
+            _DroneSummaryList(droneProfiles: _droneProfiles),
             const SizedBox(height: 18),
             const _FormSectionTitle('Beta Testing'),
             const SizedBox(height: 10),
@@ -3231,33 +3243,162 @@ class _ProfileStatsGrid extends StatelessWidget {
   }
 }
 
-class _DroneSummaryList extends StatelessWidget {
-  const _DroneSummaryList({required this.droneCounts});
+class _DroneProfileSummary {
+  _DroneProfileSummary({required this.model});
 
-  final Map<String, int> droneCounts;
+  final String model;
+  int totalFlights = 0;
+  int totalMinutes = 0;
+  int mappedFlights = 0;
+  int mediaFlights = 0;
+  String latestDate = '';
+
+  void addFlight(FlightRecord flight) {
+    totalFlights += 1;
+    totalMinutes += _durationMinutesFor(flight.duration);
+    if (flight.hasCoordinates) {
+      mappedFlights += 1;
+    }
+    if (flight.hasMedia) {
+      mediaFlights += 1;
+    }
+    latestDate = latestDate.isEmpty ? flight.date : latestDate;
+  }
+
+  String get flightLabel =>
+      totalFlights == 1 ? '1 flight' : '$totalFlights flights';
+
+  String get timeLabel {
+    final hours = totalMinutes ~/ 60;
+    final remainingMinutes = totalMinutes % 60;
+    if (hours == 0) {
+      return '${remainingMinutes}m';
+    }
+    if (remainingMinutes == 0) {
+      return '${hours}h';
+    }
+    return '${hours}h ${remainingMinutes}m';
+  }
+}
+
+class _DroneSummaryList extends StatelessWidget {
+  const _DroneSummaryList({required this.droneProfiles});
+
+  final List<_DroneProfileSummary> droneProfiles;
 
   @override
   Widget build(BuildContext context) {
-    if (droneCounts.isEmpty) {
+    if (droneProfiles.isEmpty) {
       return const _LocationSummary(
         title: 'No drones yet',
         subtitle: 'Add a drone model when saving a flight record.',
       );
     }
 
-    final entries = droneCounts.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-
     return Column(
       children: [
-        for (final entry in entries) ...[
-          _LocationSummary(
-            title: entry.key,
-            subtitle: entry.value == 1 ? '1 flight' : '${entry.value} flights',
-          ),
+        for (final profile in droneProfiles) ...[
+          _DroneProfileCard(profile: profile),
           const SizedBox(height: 10),
         ],
       ],
+    );
+  }
+}
+
+class _DroneProfileCard extends StatelessWidget {
+  const _DroneProfileCard({required this.profile});
+
+  final _DroneProfileSummary profile;
+
+  @override
+  Widget build(BuildContext context) {
+    final subtitleStyle = Theme.of(
+      context,
+    ).textTheme.bodySmall?.copyWith(color: const Color(0xFF647B7A));
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFFE1E8E6)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.flight_takeoff_outlined, color: Color(0xFF1D7373)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  profile.model,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: const Color(0xFF123737),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${profile.flightLabel} - ${profile.timeLabel} total',
+                  style: subtitleStyle,
+                ),
+                const SizedBox(height: 4),
+                Text('Latest: ${profile.latestDate}', style: subtitleStyle),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    _MiniStatChip(
+                      icon: Icons.map_outlined,
+                      label: '${profile.mappedFlights} mapped',
+                    ),
+                    _MiniStatChip(
+                      icon: Icons.image_outlined,
+                      label: '${profile.mediaFlights} media',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MiniStatChip extends StatelessWidget {
+  const _MiniStatChip({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: const Color(0xFFEAF4F1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: const Color(0xFF1D7373)),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: const Color(0xFF123737),
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -49,6 +49,8 @@ searchable, reviewable creative records.
 - Media metadata fields for type, local path, and caption
 - Flight Map tab with mapped flight summaries
 - Profile statistics for flight time, mapped records, media records, and drones
+- Device profile summaries for drone usage, total time, latest flight, map, and
+  media counts
 - Beta status and local-data privacy notes
 - Copyable tester feedback template
 - Beta release checklist
@@ -60,7 +62,7 @@ searchable, reviewable creative records.
 
 ## Current Stage
 
-SkyLog v3.0: CSV Export.
+SkyLog v3.1: Device Profiles.
 
 The app currently supports:
 
@@ -79,18 +81,19 @@ The app currently supports:
 13. Media metadata for type, local path, and caption
 14. Flight Map tab with mapped flight summaries
 15. Profile statistics and drone usage summaries
-16. Beta status and local-data privacy notes
-17. Copyable tester feedback template
-18. Beta release checklist
-19. Known limits and tester instructions
-20. Deployment readiness checks
-21. Fixed web beta deployment path
-22. Small beta feedback plan
-23. Automatic web deployment after stable pushes
-24. Tester quick start
-25. Organized beta profile sections
-26. Web update guidance for cached beta links
-27. Early tester guide and feedback materials
+16. Device profile summaries
+17. Beta status and local-data privacy notes
+18. Copyable tester feedback template
+19. Beta release checklist
+20. Known limits and tester instructions
+21. Deployment readiness checks
+22. Fixed web beta deployment path
+23. Small beta feedback plan
+24. Automatic web deployment after stable pushes
+25. Tester quick start
+26. Organized beta profile sections
+27. Web update guidance for cached beta links
+28. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -119,8 +122,9 @@ tester needs before using it.
 - v2.8: Flight Map tab with mapped flight summaries and detail links.
 - v2.9: Profile statistics and drone usage summaries.
 - v3.0: CSV table export for spreadsheet review.
-- v3.1 next: continue Sprint 4 with stronger backup reporting or device
-  management.
+- v3.1: device profile summaries for drone usage, time, latest flight, map, and
+  media counts.
+- v3.2 next: finish Sprint 4 with stronger backup reporting.
 - Later: feedback-driven fixes and public-facing polish before wider
   sharing.
 
