@@ -193,6 +193,12 @@ This will help turn the project into a strong long-term portfolio story.
 - Reworked Flight Map to use real flight records with saved coordinates.
 - Added mapped flight stats and tappable mapped flight summaries.
 - Added a widget test for opening a mapped flight detail from Map.
+- Started SkyLog v2.9 as a profile statistics milestone from Sprint 4.
+- Updated the current app version label to `SkyLog v2.9`.
+- Added Pilot Stats to Profile using real saved flight records.
+- Replaced static My Drones examples with drone usage counts from records.
+- Added primary drone, flight time, mapped flight, and media flight summaries.
+- Added a widget test for Profile flight and drone statistics.
 
 ### Reflection
 
@@ -255,9 +261,11 @@ SkyLog v2.7 continues Sprint 3 by linking flight records to media notes without
 taking on photo permissions, file copying, or cloud upload yet.
 SkyLog v2.8 connects the saved coordinates back into the main app navigation so
 the map footprint is no longer only a placeholder.
+SkyLog v2.9 begins Sprint 4 by making the Profile page summarize real records
+instead of showing fixed drone examples.
 
 ### Next Step
 
-- Decide whether Sprint 3 needs media gallery polish before moving to Sprint 4.
-- Keep the map provider-free until there is a clear need for real map tiles.
-- Use feedback to decide whether the Map tab is understandable.
+- Continue Sprint 4 with CSV export or stronger backup reporting.
+- Keep Profile statistics focused on useful record summaries.
+- Use feedback to decide whether drone management needs its own editor later.

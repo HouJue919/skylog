@@ -48,6 +48,7 @@ searchable, reviewable creative records.
 - Optional latitude and longitude saved with flight records
 - Media metadata fields for type, local path, and caption
 - Flight Map tab with mapped flight summaries
+- Profile statistics for flight time, mapped records, media records, and drones
 - Beta status and local-data privacy notes
 - Copyable tester feedback template
 - Beta release checklist
@@ -58,7 +59,7 @@ searchable, reviewable creative records.
 
 ## Current Stage
 
-SkyLog v2.8: Flight Map Footprint.
+SkyLog v2.9: Profile Statistics.
 
 The app currently supports:
 
@@ -75,18 +76,19 @@ The app currently supports:
 11. Optional latitude and longitude for map-ready records
 12. Media metadata for type, local path, and caption
 13. Flight Map tab with mapped flight summaries
-14. Beta status and local-data privacy notes
-15. Copyable tester feedback template
-16. Beta release checklist
-17. Known limits and tester instructions
-18. Deployment readiness checks
-19. Fixed web beta deployment path
-20. Small beta feedback plan
-21. Automatic web deployment after stable pushes
-22. Tester quick start
-23. Organized beta profile sections
-24. Web update guidance for cached beta links
-25. Early tester guide and feedback materials
+14. Profile statistics and drone usage summaries
+15. Beta status and local-data privacy notes
+16. Copyable tester feedback template
+17. Beta release checklist
+18. Known limits and tester instructions
+19. Deployment readiness checks
+20. Fixed web beta deployment path
+21. Small beta feedback plan
+22. Automatic web deployment after stable pushes
+23. Tester quick start
+24. Organized beta profile sections
+25. Web update guidance for cached beta links
+26. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -113,8 +115,8 @@ tester needs before using it.
 - v2.6: optional latitude and longitude fields for map-ready flight records.
 - v2.7: media metadata fields for type, local path, and caption.
 - v2.8: Flight Map tab with mapped flight summaries and detail links.
-- v2.9 next: continue Sprint 3 with media gallery polish or start Sprint 4
-  statistics.
+- v2.9: Profile statistics and drone usage summaries.
+- v3.0 next: continue Sprint 4 with CSV export or stronger backup reporting.
 - Later: feedback-driven fixes and public-facing polish before wider
   sharing.
 

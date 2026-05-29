@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v2.8 - Flight Map Footprint
+SkyLog v2.9 - Profile Statistics
 
 This is a private beta testing version. It is not a public release yet.
 
@@ -36,8 +36,9 @@ Please try these basic flows:
 14. Delete a test record from Logs.
 15. Try saving with an empty title, location, or duration and check whether the
    app explains what is missing.
-16. Go to Profile and copy the feedback template.
-17. Open Tester Instructions and confirm the limits are clear.
+16. Go to Profile and confirm Pilot Stats and My Drones match the test records.
+17. Copy the feedback template.
+18. Open Tester Instructions and confirm the limits are clear.
 
 ## Feedback Questions
 

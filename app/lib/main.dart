@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v2.8';
-const String _appStageLabel = 'Flight Map Footprint';
+const String _appVersionLabel = 'SkyLog v2.9';
+const String _appStageLabel = 'Profile Statistics';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -1131,6 +1131,56 @@ class ProfileScreen extends StatelessWidget {
   final List<FlightRecord> flights;
   final VoidCallback onResetDemoData;
 
+  int get _totalFlightMinutes {
+    var total = 0;
+    for (final flight in flights) {
+      final match = RegExp(r'\d+').firstMatch(flight.duration);
+      if (match != null) {
+        total += int.parse(match.group(0)!);
+      }
+    }
+    return total;
+  }
+
+  int get _mappedFlightCount {
+    return flights.where((flight) => flight.hasCoordinates).length;
+  }
+
+  int get _mediaFlightCount {
+    return flights.where((flight) => flight.hasMedia).length;
+  }
+
+  String get _primaryDrone {
+    final counts = <String, int>{};
+    for (final flight in flights) {
+      final drone = flight.drone.trim();
+      if (drone.isEmpty) {
+        continue;
+      }
+      counts[drone] = (counts[drone] ?? 0) + 1;
+    }
+
+    if (counts.isEmpty) {
+      return 'No drone yet';
+    }
+
+    final sortedEntries = counts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    return sortedEntries.first.key;
+  }
+
+  Map<String, int> get _droneCounts {
+    final counts = <String, int>{};
+    for (final flight in flights) {
+      final drone = flight.drone.trim();
+      if (drone.isEmpty) {
+        continue;
+      }
+      counts[drone] = (counts[drone] ?? 0) + 1;
+    }
+    return counts;
+  }
+
   String _buildExportJson() {
     const encoder = JsonEncoder.withIndent('  ');
     return encoder.convert({
@@ -1626,17 +1676,17 @@ Important:
             const SizedBox(height: 18),
             const _PilotCard(),
             const SizedBox(height: 18),
+            _ProfileStatsGrid(
+              totalFlights: flights.length,
+              totalMinutes: _totalFlightMinutes,
+              mappedFlights: _mappedFlightCount,
+              mediaFlights: _mediaFlightCount,
+              primaryDrone: _primaryDrone,
+            ),
+            const SizedBox(height: 18),
             const _FormSectionTitle('My Drones'),
             const SizedBox(height: 10),
-            const _LocationSummary(
-              title: 'DJI Mini 4 Pro',
-              subtitle: '8 flights - primary travel drone',
-            ),
-            const SizedBox(height: 10),
-            const _LocationSummary(
-              title: 'DJI Mini 3',
-              subtitle: '4 flights - practice drone',
-            ),
+            _DroneSummaryList(droneCounts: _droneCounts),
             const SizedBox(height: 18),
             const _FormSectionTitle('Beta Testing'),
             const SizedBox(height: 10),
@@ -3011,6 +3061,92 @@ class _SettingsTile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ProfileStatsGrid extends StatelessWidget {
+  const _ProfileStatsGrid({
+    required this.totalFlights,
+    required this.totalMinutes,
+    required this.mappedFlights,
+    required this.mediaFlights,
+    required this.primaryDrone,
+  });
+
+  final int totalFlights;
+  final int totalMinutes;
+  final int mappedFlights;
+  final int mediaFlights;
+  final String primaryDrone;
+
+  String get _flightTimeLabel {
+    final hours = totalMinutes ~/ 60;
+    final remainingMinutes = totalMinutes % 60;
+    if (hours == 0) {
+      return '${remainingMinutes}m';
+    }
+    if (remainingMinutes == 0) {
+      return '${hours}h';
+    }
+    return '${hours}h ${remainingMinutes}m';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _FormSectionTitle('Pilot Stats'),
+        const SizedBox(height: 10),
+        GridView.count(
+          crossAxisCount: 2,
+          childAspectRatio: 1.45,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          children: [
+            _StatCard(label: 'Total Flights', value: '$totalFlights'),
+            _StatCard(label: 'Flight Time', value: _flightTimeLabel),
+            _StatCard(label: 'Mapped', value: '$mappedFlights'),
+            _StatCard(label: 'With Media', value: '$mediaFlights'),
+          ],
+        ),
+        const SizedBox(height: 12),
+        _LocationSummary(title: 'Primary Drone', subtitle: primaryDrone),
+      ],
+    );
+  }
+}
+
+class _DroneSummaryList extends StatelessWidget {
+  const _DroneSummaryList({required this.droneCounts});
+
+  final Map<String, int> droneCounts;
+
+  @override
+  Widget build(BuildContext context) {
+    if (droneCounts.isEmpty) {
+      return const _LocationSummary(
+        title: 'No drones yet',
+        subtitle: 'Add a drone model when saving a flight record.',
+      );
+    }
+
+    final entries = droneCounts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    return Column(
+      children: [
+        for (final entry in entries) ...[
+          _LocationSummary(
+            title: entry.key,
+            subtitle: entry.value == 1 ? '1 flight' : '${entry.value} flights',
+          ),
+          const SizedBox(height: 10),
+        ],
+      ],
     );
   }
 }

@@ -57,8 +57,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v2.8'), findsOneWidget);
-    expect(find.text('Flight Map Footprint'), findsOneWidget);
+    expect(find.text('SkyLog v2.9'), findsOneWidget);
+    expect(find.text('Profile Statistics'), findsOneWidget);
   });
 
   testWidgets('map screen opens mapped flight detail', (
@@ -112,6 +112,34 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(find.text('Release Tools'), findsOneWidget);
+  });
+
+  testWidgets('profile shows flight and drone statistics', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Pilot Stats'), findsOneWidget);
+    expect(find.text('Flight Time'), findsOneWidget);
+    expect(find.text('1h 13m'), findsOneWidget);
+    expect(find.text('Mapped'), findsOneWidget);
+    expect(find.text('With Media'), findsOneWidget);
+    expect(find.text('Primary Drone'), findsOneWidget);
+    expect(find.text('DJI Mini 4 Pro'), findsWidgets);
+
+    await tester.scrollUntilVisible(
+      find.text('My Drones'),
+      80,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('DJI Mini 4 Pro'), findsWidgets);
+    expect(find.text('2 flights'), findsOneWidget);
+    expect(find.text('DJI Mini 3'), findsOneWidget);
+    expect(find.text('1 flight'), findsOneWidget);
   });
 
   testWidgets('profile explains beta status and local data privacy', (

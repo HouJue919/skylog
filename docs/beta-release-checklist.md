@@ -28,6 +28,7 @@ Use this checklist before sharing SkyLog with any outside tester.
 - Confirm media type, path, and caption appear in the detail page when provided.
 - Confirm Purpose, Issues, and Next Improvements appear in the detail page.
 - Edit the flight and confirm Logs updates.
+- Open Profile and confirm Pilot Stats and My Drones update from saved records.
 - Delete a test flight and confirm it disappears.
 
 ## Data And Privacy
