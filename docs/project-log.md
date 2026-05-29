@@ -174,6 +174,12 @@ This will help turn the project into a strong long-term portfolio story.
 - Added creative review inputs to the Add Flight and Flight Detail flows.
 - Included creative review fields in search and JSON backup export.
 - Added a widget test for saving and reviewing creative flight notes.
+- Started SkyLog v2.6 as a map coordinates milestone from Sprint 3.
+- Updated the current app version label to `SkyLog v2.6`.
+- Added optional latitude and longitude fields to `FlightRecord`.
+- Add Flight can now save map-ready coordinates.
+- Flight Detail now shows a coordinate label and map-style preview.
+- Added a widget test for saving and reviewing flight coordinates.
 
 ### Reflection
 
@@ -230,9 +236,11 @@ later. SkyLog v2.4 addresses a real deployment issue from testing: browsers can
 cache an older Flutter Web version, so testers now get clear refresh guidance.
 SkyLog v2.5 returns to product depth by helping pilots record why a flight
 happened, what went wrong, and what they should improve next.
+SkyLog v2.6 begins the original Sprint 3 map work by saving coordinates before
+adding a full map provider.
 
 ### Next Step
 
-- Test v2.5 on the fixed web beta link after deployment.
-- Ask early testers whether the creative review fields feel useful or too long.
-- Use feedback to decide the v2.6 fixes before adding major new features.
+- Continue Sprint 3 with media placeholders or a richer map view.
+- Keep coordinate input optional so testers do not need exact GPS data.
+- Use feedback to decide whether coordinates are understandable enough.

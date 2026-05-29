@@ -45,6 +45,7 @@ searchable, reviewable creative records.
 - Pre-flight safety checklist
 - Checklist completion saved into new flight records
 - Creative review fields for flight purpose, issues, and next improvements
+- Optional latitude and longitude saved with flight records
 - Beta status and local-data privacy notes
 - Copyable tester feedback template
 - Beta release checklist
@@ -55,7 +56,7 @@ searchable, reviewable creative records.
 
 ## Current Stage
 
-SkyLog v2.5: Creative Review Fields.
+SkyLog v2.6: Map Coordinates.
 
 The app currently supports:
 
@@ -69,18 +70,19 @@ The app currently supports:
 8. Pre-flight checklist with saved progress
 9. Checklist status attached to saved flight records
 10. Creative review fields for purpose, issues, and next improvements
-11. Beta status and local-data privacy notes
-12. Copyable tester feedback template
-13. Beta release checklist
-14. Known limits and tester instructions
-15. Deployment readiness checks
-16. Fixed web beta deployment path
-17. Small beta feedback plan
-18. Automatic web deployment after stable pushes
-19. Tester quick start
-20. Organized beta profile sections
-21. Web update guidance for cached beta links
-22. Early tester guide and feedback materials
+11. Optional latitude and longitude for map-ready records
+12. Beta status and local-data privacy notes
+13. Copyable tester feedback template
+14. Beta release checklist
+15. Known limits and tester instructions
+16. Deployment readiness checks
+17. Fixed web beta deployment path
+18. Small beta feedback plan
+19. Automatic web deployment after stable pushes
+20. Tester quick start
+21. Organized beta profile sections
+22. Web update guidance for cached beta links
+23. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -104,7 +106,9 @@ tester needs before using it.
 - v2.4: guidance for testers when browsers cache an older web beta.
 - v2.5: creative review fields for flight purpose, issues, and next
   improvements.
-- v2.6 next: feedback-driven fixes and public-facing polish before wider
+- v2.6: optional latitude and longitude fields for map-ready flight records.
+- v2.7 next: continue Sprint 3 with media placeholders or a richer map view.
+- Later: feedback-driven fixes and public-facing polish before wider
   sharing.
 
 ## Running The App

@@ -51,8 +51,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v2.5'), findsOneWidget);
-    expect(find.text('Creative Review Fields'), findsOneWidget);
+    expect(find.text('SkyLog v2.6'), findsOneWidget);
+    expect(find.text('Map Coordinates'), findsOneWidget);
   });
 
   testWidgets('profile groups beta tools by audience', (
@@ -451,10 +451,18 @@ void main() {
       findsOneWidget,
     );
 
-    final fields = find.byType(EditableText);
-    await tester.enterText(fields.at(0), 'Checklist saved flight');
-    await tester.enterText(fields.at(1), 'Safety field');
-    await tester.enterText(fields.at(3), '14 min');
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Title')),
+      'Checklist saved flight',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Location')),
+      'Safety field',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Duration')),
+      '14 min',
+    );
 
     await tester.scrollUntilVisible(
       find.text('Save Flight'),
@@ -546,11 +554,22 @@ void main() {
     await tester.tap(find.text('Add'));
     await tester.pumpAndSettle();
 
-    final fields = find.byType(EditableText);
-    await tester.enterText(fields.at(0), 'Harbor orbit practice');
-    await tester.enterText(fields.at(1), 'Qingdao harbor');
-    await tester.enterText(fields.at(2), 'May 27, 2026');
-    await tester.enterText(fields.at(3), '16 min');
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Title')),
+      'Harbor orbit practice',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Location')),
+      'Qingdao harbor',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Date')),
+      'May 27, 2026',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Duration')),
+      '16 min',
+    );
 
     await tester.scrollUntilVisible(
       find.text('Save Flight'),
@@ -630,6 +649,49 @@ void main() {
     expect(find.text('Use slower stick input next time.'), findsOneWidget);
   });
 
+  testWidgets('new flight saves map coordinates', (WidgetTester tester) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Add'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Title')),
+      'Coordinate test flight',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Location')),
+      'Map practice field',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Latitude')),
+      '36.1234',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Longitude')),
+      '120.5678',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Duration')),
+      '12 min',
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('Save Flight'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await saveFlight(tester);
+
+    await tester.tap(find.text('Coordinate test flight'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Map Location'), findsOneWidget);
+    expect(find.text('Coordinates'), findsOneWidget);
+    expect(find.text('36.1234, 120.5678'), findsWidgets);
+  });
+
   testWidgets('add flight form resets after saving', (
     WidgetTester tester,
   ) async {
@@ -639,10 +701,18 @@ void main() {
     await tester.tap(find.text('Add'));
     await tester.pumpAndSettle();
 
-    final fields = find.byType(EditableText);
-    await tester.enterText(fields.at(0), 'Reset test flight');
-    await tester.enterText(fields.at(1), 'Reset beach');
-    await tester.enterText(fields.at(3), '9 min');
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Title')),
+      'Reset test flight',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Location')),
+      'Reset beach',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Duration')),
+      '9 min',
+    );
 
     await tester.scrollUntilVisible(
       find.text('Save Flight'),
@@ -712,6 +782,7 @@ void main() {
     expect(find.text('Flight Detail'), findsOneWidget);
     expect(find.text('Flight Data'), findsOneWidget);
     expect(find.text('Map Location'), findsOneWidget);
+    expect(find.text('36.0671, 120.3826'), findsWidgets);
 
     await tester.drag(find.byType(ListView), const Offset(0, -500));
     await tester.pumpAndSettle();
@@ -759,10 +830,18 @@ void main() {
     await tester.tap(find.text('Add'));
     await tester.pumpAndSettle();
 
-    final fields = find.byType(EditableText);
-    await tester.enterText(fields.at(0), '');
-    await tester.enterText(fields.at(1), '');
-    await tester.enterText(fields.at(3), '');
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Title')),
+      '',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Location')),
+      '',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Duration')),
+      '',
+    );
 
     await tester.scrollUntilVisible(
       find.text('Save Flight'),
@@ -791,11 +870,22 @@ void main() {
     await tester.tap(find.text('Add'));
     await tester.pumpAndSettle();
 
-    var fields = find.byType(EditableText);
-    await tester.enterText(fields.at(0), 'V1 checklist flight');
-    await tester.enterText(fields.at(1), 'Checklist beach');
-    await tester.enterText(fields.at(2), 'May 27, 2026');
-    await tester.enterText(fields.at(3), '21 min');
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Title')),
+      'V1 checklist flight',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Location')),
+      'Checklist beach',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Date')),
+      'May 27, 2026',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Duration')),
+      '21 min',
+    );
 
     await tester.scrollUntilVisible(
       find.text('Save Flight'),

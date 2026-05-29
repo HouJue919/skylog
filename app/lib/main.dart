@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v2.5';
-const String _appStageLabel = 'Creative Review Fields';
+const String _appVersionLabel = 'SkyLog v2.6';
+const String _appStageLabel = 'Map Coordinates';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -23,6 +23,8 @@ class FlightRecord {
   const FlightRecord({
     required this.title,
     required this.location,
+    this.latitude,
+    this.longitude,
     required this.date,
     required this.duration,
     required this.drone,
@@ -37,6 +39,8 @@ class FlightRecord {
 
   final String title;
   final String location;
+  final double? latitude;
+  final double? longitude;
   final String date;
   final String duration;
   final String drone;
@@ -60,10 +64,24 @@ class FlightRecord {
     return checklistTotal > 0 && checklistCompleted >= checklistTotal;
   }
 
-  Map<String, Object> toJson() {
+  bool get hasCoordinates {
+    return latitude != null && longitude != null;
+  }
+
+  String get coordinateLabel {
+    if (!hasCoordinates) {
+      return 'Coordinates not set';
+    }
+
+    return '${latitude!.toStringAsFixed(4)}, ${longitude!.toStringAsFixed(4)}';
+  }
+
+  Map<String, Object?> toJson() {
     return {
       'title': title,
       'location': location,
+      'latitude': latitude,
+      'longitude': longitude,
       'date': date,
       'duration': duration,
       'drone': drone,
@@ -81,6 +99,8 @@ class FlightRecord {
     return FlightRecord(
       title: json['title'] as String? ?? '',
       location: json['location'] as String? ?? '',
+      latitude: _readDouble(json['latitude']),
+      longitude: _readDouble(json['longitude']),
       date: json['date'] as String? ?? '',
       duration: json['duration'] as String? ?? '',
       drone: json['drone'] as String? ?? '',
@@ -94,6 +114,16 @@ class FlightRecord {
           json['checklistTotal'] as int? ?? _preFlightChecklistTotal,
     );
   }
+
+  static double? _readDouble(Object? value) {
+    if (value is num) {
+      return value.toDouble();
+    }
+    if (value is String) {
+      return double.tryParse(value);
+    }
+    return null;
+  }
 }
 
 List<FlightRecord> _demoFlights() {
@@ -101,6 +131,8 @@ List<FlightRecord> _demoFlights() {
     const FlightRecord(
       title: 'Coastal sunset practice',
       location: 'Qingdao coast',
+      latitude: 36.0671,
+      longitude: 120.3826,
       date: 'May 24, 2026',
       duration: '24 min',
       drone: 'DJI Mini 4 Pro',
@@ -116,6 +148,8 @@ List<FlightRecord> _demoFlights() {
     const FlightRecord(
       title: 'Mountain overlook test',
       location: 'Laoshan overlook',
+      latitude: 36.1951,
+      longitude: 120.5963,
       date: 'May 19, 2026',
       duration: '18 min',
       drone: 'DJI Mini 4 Pro',
@@ -130,6 +164,8 @@ List<FlightRecord> _demoFlights() {
     const FlightRecord(
       title: 'City park framing practice',
       location: 'Central park field',
+      latitude: 36.0798,
+      longitude: 120.3451,
       date: 'May 12, 2026',
       duration: '31 min',
       drone: 'DJI Mini 3',
@@ -526,6 +562,7 @@ class _FlightLogScreenState extends State<FlightLogScreen> {
       final searchableText = [
         flight.title,
         flight.location,
+        flight.coordinateLabel,
         flight.date,
         flight.duration,
         flight.drone,
@@ -603,6 +640,8 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController(text: 'New practice flight');
   final _locationController = TextEditingController(text: 'Qingdao coast');
+  final _latitudeController = TextEditingController(text: '36.0671');
+  final _longitudeController = TextEditingController(text: '120.3826');
   final _dateController = TextEditingController(text: 'May 27, 2026');
   final _durationController = TextEditingController(text: '24 min');
   final _droneController = TextEditingController(text: 'DJI Mini 4 Pro');
@@ -627,6 +666,8 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
   void dispose() {
     _titleController.dispose();
     _locationController.dispose();
+    _latitudeController.dispose();
+    _longitudeController.dispose();
     _dateController.dispose();
     _durationController.dispose();
     _droneController.dispose();
@@ -648,6 +689,8 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
       FlightRecord(
         title: title,
         location: _locationController.text.trim(),
+        latitude: _parseOptionalCoordinate(_latitudeController.text),
+        longitude: _parseOptionalCoordinate(_longitudeController.text),
         date: _dateController.text.trim(),
         duration: _durationController.text.trim(),
         drone: _droneController.text.trim(),
@@ -666,6 +709,8 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
   void _resetForm() {
     _titleController.text = 'New practice flight';
     _locationController.clear();
+    _latitudeController.clear();
+    _longitudeController.clear();
     _dateController.text = 'May 27, 2026';
     _durationController.clear();
     _droneController.text = 'DJI Mini 4 Pro';
@@ -674,6 +719,26 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
     _summaryController.clear();
     _issuesController.clear();
     _improvementsController.clear();
+  }
+
+  double? _parseOptionalCoordinate(String value) {
+    final trimmedValue = value.trim();
+    if (trimmedValue.isEmpty) {
+      return null;
+    }
+
+    return double.tryParse(trimmedValue);
+  }
+
+  String? _validateOptionalCoordinate(String? value) {
+    final trimmedValue = value?.trim() ?? '';
+    if (trimmedValue.isEmpty) {
+      return null;
+    }
+    if (double.tryParse(trimmedValue) == null) {
+      return 'Enter a valid number or leave this blank.';
+    }
+    return null;
   }
 
   @override
@@ -710,6 +775,18 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
                   label: 'Location',
                   controller: _locationController,
                   requiredMessage: 'Location is required.',
+                ),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Latitude',
+                  controller: _latitudeController,
+                  validator: _validateOptionalCoordinate,
+                ),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Longitude',
+                  controller: _longitudeController,
+                  validator: _validateOptionalCoordinate,
                 ),
                 const SizedBox(height: 10),
                 _FlightTextField(label: 'Date', controller: _dateController),
@@ -1942,6 +2019,8 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
 
   late final TextEditingController _titleController;
   late final TextEditingController _locationController;
+  late final TextEditingController _latitudeController;
+  late final TextEditingController _longitudeController;
   late final TextEditingController _dateController;
   late final TextEditingController _durationController;
   late final TextEditingController _droneController;
@@ -1957,6 +2036,12 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
     _flight = widget.flight;
     _titleController = TextEditingController(text: _flight.title);
     _locationController = TextEditingController(text: _flight.location);
+    _latitudeController = TextEditingController(
+      text: _flight.latitude?.toString() ?? '',
+    );
+    _longitudeController = TextEditingController(
+      text: _flight.longitude?.toString() ?? '',
+    );
     _dateController = TextEditingController(text: _flight.date);
     _durationController = TextEditingController(text: _flight.duration);
     _droneController = TextEditingController(text: _flight.drone);
@@ -1971,6 +2056,8 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
   void dispose() {
     _titleController.dispose();
     _locationController.dispose();
+    _latitudeController.dispose();
+    _longitudeController.dispose();
     _dateController.dispose();
     _durationController.dispose();
     _droneController.dispose();
@@ -1986,6 +2073,8 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
     final updatedFlight = FlightRecord(
       title: _titleController.text.trim(),
       location: _locationController.text.trim(),
+      latitude: _parseOptionalCoordinate(_latitudeController.text),
+      longitude: _parseOptionalCoordinate(_longitudeController.text),
       date: _dateController.text.trim(),
       duration: _durationController.text.trim(),
       drone: _droneController.text.trim(),
@@ -2003,6 +2092,15 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
       _flight = updatedFlight;
       _isEditing = false;
     });
+  }
+
+  double? _parseOptionalCoordinate(String value) {
+    final trimmedValue = value.trim();
+    if (trimmedValue.isEmpty) {
+      return null;
+    }
+
+    return double.tryParse(trimmedValue);
   }
 
   @override
@@ -2097,8 +2195,24 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
             title: 'Map Location',
             children: [
               _DetailRow(label: 'Location', value: _flight.location),
+              if (_isEditing) ...[
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Latitude',
+                  controller: _latitudeController,
+                ),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Longitude',
+                  controller: _longitudeController,
+                ),
+              ] else
+                _DetailRow(
+                  label: 'Coordinates',
+                  value: _flight.coordinateLabel,
+                ),
               const SizedBox(height: 12),
-              const _SmallMapPreview(),
+              _SmallMapPreview(flight: _flight),
             ],
           ),
           const SizedBox(height: 16),
@@ -2270,7 +2384,9 @@ class _DetailRow extends StatelessWidget {
 }
 
 class _SmallMapPreview extends StatelessWidget {
-  const _SmallMapPreview();
+  const _SmallMapPreview({required this.flight});
+
+  final FlightRecord flight;
 
   @override
   Widget build(BuildContext context) {
@@ -2281,8 +2397,34 @@ class _SmallMapPreview extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: const Color(0xFFC9DCD8)),
       ),
-      child: const Center(
-        child: Icon(Icons.place, color: Color(0xFF1D7373), size: 42),
+      child: Stack(
+        children: [
+          const Positioned.fill(
+            child: Icon(Icons.map_outlined, color: Color(0xFF89AAA5), size: 52),
+          ),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  flight.hasCoordinates
+                      ? Icons.location_on
+                      : Icons.location_off_outlined,
+                  color: const Color(0xFF1D7373),
+                  size: 34,
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  flight.coordinateLabel,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: const Color(0xFF123737),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -2311,12 +2453,14 @@ class _FlightTextField extends StatelessWidget {
     required this.controller,
     this.maxLines = 1,
     this.requiredMessage,
+    this.validator,
   });
 
   final String label;
   final TextEditingController controller;
   final int maxLines;
   final String? requiredMessage;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -2325,6 +2469,10 @@ class _FlightTextField extends StatelessWidget {
       controller: controller,
       maxLines: maxLines,
       validator: (value) {
+        final customResult = validator?.call(value);
+        if (customResult != null) {
+          return customResult;
+        }
         if (requiredMessage == null) {
           return null;
         }
