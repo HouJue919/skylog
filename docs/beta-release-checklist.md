@@ -19,6 +19,8 @@ Use this checklist before sharing SkyLog with any outside tester.
 - Complete the pre-flight checklist.
 - Add a new flight record.
 - Confirm the new flight appears in Logs.
+- Open Map and confirm coordinate-enabled records appear there.
+- Tap a mapped record and confirm the detail page opens.
 - Open the flight detail page.
 - Confirm checklist status is saved in the detail page.
 - Confirm coordinates appear in the detail page when latitude and longitude are

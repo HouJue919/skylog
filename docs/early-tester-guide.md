@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v2.7 - Media Metadata
+SkyLog v2.8 - Flight Map Footprint
 
 This is a private beta testing version. It is not a public release yet.
 
@@ -28,14 +28,16 @@ Please try these basic flows:
    or photo name.
 8. Fill in Purpose, Issues, and Next Improvements if you have time.
 9. Go to Logs and confirm the new record appears.
-10. Tap the flight record and check that checklist status, coordinates, media
+10. Go to Map and confirm mapped records appear.
+11. Tap a mapped record and confirm it opens the flight detail page.
+12. Tap the flight record and check that checklist status, coordinates, media
    notes, and creative review notes appear in Detail.
-11. Close and reopen the app, then confirm the record is still there.
-12. Delete a test record from Logs.
-13. Try saving with an empty title, location, or duration and check whether the
+13. Close and reopen the app, then confirm the record is still there.
+14. Delete a test record from Logs.
+15. Try saving with an empty title, location, or duration and check whether the
    app explains what is missing.
-14. Go to Profile and copy the feedback template.
-15. Open Tester Instructions and confirm the limits are clear.
+16. Go to Profile and copy the feedback template.
+17. Open Tester Instructions and confirm the limits are clear.
 
 ## Feedback Questions
 

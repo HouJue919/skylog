@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v2.7';
-const String _appStageLabel = 'Media Metadata';
+const String _appVersionLabel = 'SkyLog v2.8';
+const String _appStageLabel = 'Flight Map Footprint';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -454,6 +454,7 @@ class _MainShellState extends State<MainShell> {
         onToggleItem: _toggleChecklistItem,
         onReset: _resetChecklist,
       ),
+      FlightMapScreen(flights: _flights, onUpdate: _updateFlight),
       ProfileScreen(flights: _flights, onResetDemoData: _resetDemoData),
     ];
 
@@ -486,6 +487,11 @@ class _MainShellState extends State<MainShell> {
             icon: Icon(Icons.fact_check_outlined),
             selectedIcon: Icon(Icons.fact_check),
             label: 'Checklist',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.map_outlined),
+            selectedIcon: Icon(Icons.map),
+            label: 'Map',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),
@@ -1050,36 +1056,64 @@ class _AddFlightChecklistSummary extends StatelessWidget {
 }
 
 class FlightMapScreen extends StatelessWidget {
-  const FlightMapScreen({super.key});
+  const FlightMapScreen({
+    super.key,
+    required this.flights,
+    required this.onUpdate,
+  });
+
+  final List<FlightRecord> flights;
+  final void Function(FlightRecord oldFlight, FlightRecord newFlight) onUpdate;
+
+  List<FlightRecord> get _mappedFlights {
+    return flights.where((flight) => flight.hasCoordinates).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final mappedFlights = _mappedFlights;
+
     return Scaffold(
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
-          children: const [
-            _ScreenTitle(
+          children: [
+            const _ScreenTitle(
               title: 'Flight Map',
-              subtitle: 'A first look at where your flights happened.',
+              subtitle:
+                  'Review recorded flight coordinates and map-ready logs.',
             ),
-            SizedBox(height: 18),
-            _MapPreview(),
-            SizedBox(height: 18),
-            _LocationSummary(
-              title: 'Qingdao coast',
-              subtitle: '4 flights - 1h 42m total',
+            const SizedBox(height: 18),
+            _MapPreview(flights: mappedFlights),
+            const SizedBox(height: 18),
+            _MapStatsRow(
+              totalFlights: flights.length,
+              mappedFlights: mappedFlights.length,
             ),
-            SizedBox(height: 10),
-            _LocationSummary(
-              title: 'Laoshan overlook',
-              subtitle: '2 flights - 43m total',
-            ),
-            SizedBox(height: 10),
-            _LocationSummary(
-              title: 'Central park field',
-              subtitle: '3 flights - 1h 18m total',
-            ),
+            const SizedBox(height: 18),
+            if (mappedFlights.isEmpty)
+              const _LocationSummary(
+                title: 'No mapped flights yet',
+                subtitle: 'Add latitude and longitude to a flight record.',
+              )
+            else
+              for (final flight in mappedFlights) ...[
+                _LocationSummary(
+                  title: flight.location,
+                  subtitle: '${flight.coordinateLabel} - ${flight.title}',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => FlightDetailScreen(
+                          flight: flight,
+                          onUpdate: onUpdate,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 10),
+              ],
           ],
         ),
       ),
@@ -2656,10 +2690,21 @@ class _FlightTextField extends StatelessWidget {
 }
 
 class _MapPreview extends StatelessWidget {
-  const _MapPreview();
+  const _MapPreview({required this.flights});
+
+  final List<FlightRecord> flights;
+
+  static const List<Offset> _pinPositions = [
+    Offset(32, 42),
+    Offset(214, 72),
+    Offset(118, 150),
+    Offset(268, 132),
+  ];
 
   @override
   Widget build(BuildContext context) {
+    final visibleFlights = flights.take(_pinPositions.length).toList();
+
     return Container(
       height: 220,
       decoration: BoxDecoration(
@@ -2668,15 +2713,50 @@ class _MapPreview extends StatelessWidget {
         border: Border.all(color: const Color(0xFFC9DCD8)),
       ),
       child: Stack(
-        children: const [
-          Positioned(left: 32, top: 42, child: _MapPin(label: '4')),
-          Positioned(right: 48, top: 72, child: _MapPin(label: '2')),
-          Positioned(left: 118, bottom: 36, child: _MapPin(label: '3')),
-          Center(
+        children: [
+          const Center(
             child: Icon(Icons.map_outlined, size: 72, color: Color(0xFF89AAA5)),
           ),
+          for (var index = 0; index < visibleFlights.length; index++)
+            Positioned(
+              left: _pinPositions[index].dx,
+              top: _pinPositions[index].dy,
+              child: _MapPin(label: '${index + 1}'),
+            ),
+          if (visibleFlights.isEmpty)
+            Center(
+              child: Text(
+                'No coordinates yet',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: const Color(0xFF647B7A),
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
         ],
       ),
+    );
+  }
+}
+
+class _MapStatsRow extends StatelessWidget {
+  const _MapStatsRow({required this.totalFlights, required this.mappedFlights});
+
+  final int totalFlights;
+  final int mappedFlights;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: _StatCard(label: 'Mapped Flights', value: '$mappedFlights'),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _StatCard(label: 'Total Flights', value: '$totalFlights'),
+        ),
+      ],
     );
   }
 }
@@ -2708,46 +2788,60 @@ class _MapPin extends StatelessWidget {
 }
 
 class _LocationSummary extends StatelessWidget {
-  const _LocationSummary({required this.title, required this.subtitle});
+  const _LocationSummary({
+    required this.title,
+    required this.subtitle,
+    this.onTap,
+  });
 
   final String title;
   final String subtitle;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(8),
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFE1E8E6)),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.place_outlined, color: Color(0xFF1D7373)),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: const Color(0xFF123737),
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: const Color(0xFF647B7A),
-                  ),
-                ),
-              ],
-            ),
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: const Color(0xFFE1E8E6)),
           ),
-        ],
+          child: Row(
+            children: [
+              const Icon(Icons.place_outlined, color: Color(0xFF1D7373)),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: const Color(0xFF123737),
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: const Color(0xFF647B7A),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (onTap != null)
+                const Icon(Icons.chevron_right, color: Color(0xFF647B7A)),
+            ],
+          ),
+        ),
       ),
     );
   }

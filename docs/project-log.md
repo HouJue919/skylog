@@ -187,6 +187,12 @@ This will help turn the project into a strong long-term portfolio story.
 - Flight Detail now shows a media section and placeholder preview.
 - Included media metadata in search and JSON backup export.
 - Added a widget test for saving and reviewing media metadata.
+- Started SkyLog v2.8 as a flight map footprint milestone from Sprint 3.
+- Updated the current app version label to `SkyLog v2.8`.
+- Added a Map tab to the bottom navigation.
+- Reworked Flight Map to use real flight records with saved coordinates.
+- Added mapped flight stats and tappable mapped flight summaries.
+- Added a widget test for opening a mapped flight detail from Map.
 
 ### Reflection
 
@@ -247,9 +253,11 @@ SkyLog v2.6 begins the original Sprint 3 map work by saving coordinates before
 adding a full map provider.
 SkyLog v2.7 continues Sprint 3 by linking flight records to media notes without
 taking on photo permissions, file copying, or cloud upload yet.
+SkyLog v2.8 connects the saved coordinates back into the main app navigation so
+the map footprint is no longer only a placeholder.
 
 ### Next Step
 
-- Continue Sprint 3 with a richer map view or media gallery polish.
-- Keep media metadata local and optional during beta testing.
-- Use feedback to decide whether typed media paths are understandable enough.
+- Decide whether Sprint 3 needs media gallery polish before moving to Sprint 4.
+- Keep the map provider-free until there is a clear need for real map tiles.
+- Use feedback to decide whether the Map tab is understandable.

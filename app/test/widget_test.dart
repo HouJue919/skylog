@@ -49,10 +49,38 @@ void main() {
     expect(find.text('Pre-flight Checklist'), findsOneWidget);
     expect(find.text('0 of 6 complete'), findsOneWidget);
 
+    await tester.tap(find.text('Map'));
+    await tester.pumpAndSettle();
+    expect(find.text('Flight Map'), findsOneWidget);
+    expect(find.text('Mapped Flights'), findsOneWidget);
+    expect(find.text('Qingdao coast'), findsOneWidget);
+
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v2.7'), findsOneWidget);
-    expect(find.text('Media Metadata'), findsOneWidget);
+    expect(find.text('SkyLog v2.8'), findsOneWidget);
+    expect(find.text('Flight Map Footprint'), findsOneWidget);
+  });
+
+  testWidgets('map screen opens mapped flight detail', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Map'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Mapped Flights'), findsOneWidget);
+    expect(
+      find.text('36.0671, 120.3826 - Coastal sunset practice'),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.text('Qingdao coast'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Flight Detail'), findsOneWidget);
+    expect(find.text('Coastal sunset practice'), findsOneWidget);
   });
 
   testWidgets('profile groups beta tools by audience', (
