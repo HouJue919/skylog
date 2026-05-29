@@ -51,6 +51,7 @@ searchable, reviewable creative records.
 - Profile statistics for flight time, mapped records, media records, and drones
 - Device profile summaries for drone usage, total time, latest flight, map, and
   media counts
+- Backup report for export readiness and local-data reminders
 - Beta status and local-data privacy notes
 - Copyable tester feedback template
 - Beta release checklist
@@ -62,7 +63,7 @@ searchable, reviewable creative records.
 
 ## Current Stage
 
-SkyLog v3.1: Device Profiles.
+SkyLog v3.2: Backup Report.
 
 The app currently supports:
 
@@ -82,18 +83,19 @@ The app currently supports:
 14. Flight Map tab with mapped flight summaries
 15. Profile statistics and drone usage summaries
 16. Device profile summaries
-17. Beta status and local-data privacy notes
-18. Copyable tester feedback template
-19. Beta release checklist
-20. Known limits and tester instructions
-21. Deployment readiness checks
-22. Fixed web beta deployment path
-23. Small beta feedback plan
-24. Automatic web deployment after stable pushes
-25. Tester quick start
-26. Organized beta profile sections
-27. Web update guidance for cached beta links
-28. Early tester guide and feedback materials
+17. Backup report for export readiness
+18. Beta status and local-data privacy notes
+19. Copyable tester feedback template
+20. Beta release checklist
+21. Known limits and tester instructions
+22. Deployment readiness checks
+23. Fixed web beta deployment path
+24. Small beta feedback plan
+25. Automatic web deployment after stable pushes
+26. Tester quick start
+27. Organized beta profile sections
+28. Web update guidance for cached beta links
+29. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -124,7 +126,8 @@ tester needs before using it.
 - v3.0: CSV table export for spreadsheet review.
 - v3.1: device profile summaries for drone usage, time, latest flight, map, and
   media counts.
-- v3.2 next: finish Sprint 4 with stronger backup reporting.
+- v3.2: Backup Report for export readiness and local-data reminders.
+- v3.3 next: close Sprint 4 and prepare for Sprint 5 planning.
 - Later: feedback-driven fixes and public-facing polish before wider
   sharing.
 

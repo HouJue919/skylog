@@ -58,8 +58,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v3.1'), findsOneWidget);
-    expect(find.text('Device Profiles'), findsOneWidget);
+    expect(find.text('SkyLog v3.2'), findsOneWidget);
+    expect(find.text('Backup Report'), findsWidgets);
   });
 
   testWidgets('map screen opens mapped flight detail', (
@@ -469,6 +469,36 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.textContaining('JSON Backup'), findsWidgets);
+  });
+
+  testWidgets('profile shows backup report', (WidgetTester tester) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.text('3 records - 1h 13m total flight time'),
+      120,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('3 records - 1h 13m total flight time'), findsOneWidget);
+    expect(
+      find.text(
+        '3 map-ready records and 3 media-linked records are included in exports.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('JSON backup'), findsOneWidget);
+    expect(find.text('CSV table'), findsOneWidget);
+    expect(find.text('Local device'), findsOneWidget);
+    expect(
+      find.textContaining('Export before clearing browser data'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('profile exports CSV table', (WidgetTester tester) async {

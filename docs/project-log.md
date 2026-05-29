@@ -211,6 +211,12 @@ This will help turn the project into a strong long-term portfolio story.
 - Device profiles now show flights, total time, latest flight, mapped records,
   and media records.
 - Added widget test coverage for the richer device profile summaries.
+- Started SkyLog v3.2 as a backup report milestone from Sprint 4.
+- Updated the current app version label to `SkyLog v3.2`.
+- Added a Backup Report card above the Profile export buttons.
+- Backup Report summarizes record count, total flight time, map-ready records,
+  media-linked records, export options, and local-device risk.
+- Added widget test coverage for the Backup Report summary.
 
 ### Reflection
 
@@ -279,11 +285,14 @@ SkyLog v3.0 adds a spreadsheet-friendly export path so records can be reviewed
 outside the app, not only backed up as JSON.
 SkyLog v3.1 makes the device section more useful by turning drone names into
 small profile summaries generated from real flight records.
+SkyLog v3.2 closes the Sprint 4 backup thread by showing users what their
+exports contain and reminding them that records still live on the current
+browser/device.
 
 ### Next Step
 
-- Finish Sprint 4 with stronger backup reporting.
+- Close Sprint 4 and prepare Sprint 5 planning.
 - Keep generated device profiles simple before adding separate editable drone
   files.
-- Use feedback to decide whether spreadsheet export and device summaries are
-  useful for testers.
+- Use feedback to decide whether spreadsheet export, backup reporting, and
+  device summaries are useful for testers.

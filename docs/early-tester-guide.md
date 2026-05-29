@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v3.1 - Device Profiles
+SkyLog v3.2 - Backup Report
 
 This is a private beta testing version. It is not a public release yet.
 
@@ -39,10 +39,12 @@ Please try these basic flows:
 16. Go to Profile and confirm Pilot Stats and My Drones match the test records.
 17. Confirm each drone profile shows total flights, total time, latest flight,
    mapped records, and media records.
-18. Export JSON Backup and confirm the dialog opens.
-19. Export CSV Table and confirm the table text opens.
-20. Copy the feedback template.
-21. Open Tester Instructions and confirm the limits are clear.
+18. Confirm Backup Report explains record count, export formats, and local-data
+   risk.
+19. Export JSON Backup and confirm the dialog opens.
+20. Export CSV Table and confirm the table text opens.
+21. Copy the feedback template.
+22. Open Tester Instructions and confirm the limits are clear.
 
 ## Feedback Questions
 
@@ -64,6 +66,7 @@ Please try these basic flows:
 - Images and videos are not connected yet.
 - Drone profiles are generated from flight records, not edited as separate
   device files yet.
+- Backup Report is a readiness summary, not automatic cloud backup.
 - JSON export copies a backup to the clipboard.
 - CSV export copies table-friendly text to the clipboard.
 - Feedback template copy depends on the device/browser clipboard.

@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v3.1';
-const String _appStageLabel = 'Device Profiles';
+const String _appVersionLabel = 'SkyLog v3.2';
+const String _appStageLabel = 'Backup Report';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -22,6 +22,18 @@ const List<String> _preFlightChecklistItems = [
 int _durationMinutesFor(String duration) {
   final match = RegExp(r'\d+').firstMatch(duration);
   return match == null ? 0 : int.parse(match.group(0)!);
+}
+
+String _formatMinutes(int totalMinutes) {
+  final hours = totalMinutes ~/ 60;
+  final remainingMinutes = totalMinutes % 60;
+  if (hours == 0) {
+    return '${remainingMinutes}m';
+  }
+  if (remainingMinutes == 0) {
+    return '${hours}h';
+  }
+  return '${hours}h ${remainingMinutes}m';
 }
 
 class FlightRecord {
@@ -1898,6 +1910,13 @@ Important:
             const SizedBox(height: 18),
             const _FormSectionTitle('Data'),
             const SizedBox(height: 10),
+            _BackupReportCard(
+              totalFlights: flights.length,
+              totalMinutes: _totalFlightMinutes,
+              mappedFlights: _mappedFlightCount,
+              mediaFlights: _mediaFlightCount,
+            ),
+            const SizedBox(height: 10),
             _SettingsTile(
               key: const Key('export-json-button'),
               icon: Icons.ios_share,
@@ -3269,15 +3288,7 @@ class _DroneProfileSummary {
       totalFlights == 1 ? '1 flight' : '$totalFlights flights';
 
   String get timeLabel {
-    final hours = totalMinutes ~/ 60;
-    final remainingMinutes = totalMinutes % 60;
-    if (hours == 0) {
-      return '${remainingMinutes}m';
-    }
-    if (remainingMinutes == 0) {
-      return '${hours}h';
-    }
-    return '${hours}h ${remainingMinutes}m';
+    return _formatMinutes(totalMinutes);
   }
 }
 
@@ -3364,6 +3375,93 @@ class _DroneProfileCard extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BackupReportCard extends StatelessWidget {
+  const _BackupReportCard({
+    required this.totalFlights,
+    required this.totalMinutes,
+    required this.mappedFlights,
+    required this.mediaFlights,
+  });
+
+  final int totalFlights;
+  final int totalMinutes;
+  final int mappedFlights;
+  final int mediaFlights;
+
+  @override
+  Widget build(BuildContext context) {
+    final bodyStyle = Theme.of(
+      context,
+    ).textTheme.bodySmall?.copyWith(color: const Color(0xFF647B7A));
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFEAF4F1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFFC9DCD8)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.health_and_safety_outlined,
+                color: Color(0xFF1D7373),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Backup Report',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: const Color(0xFF123737),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '$totalFlights records - ${_formatMinutes(totalMinutes)} total flight time',
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: const Color(0xFF123737),
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '$mappedFlights map-ready records and $mediaFlights media-linked records are included in exports.',
+            style: bodyStyle,
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: const [
+              _MiniStatChip(icon: Icons.data_object, label: 'JSON backup'),
+              _MiniStatChip(
+                icon: Icons.table_chart_outlined,
+                label: 'CSV table',
+              ),
+              _MiniStatChip(
+                icon: Icons.devices_outlined,
+                label: 'Local device',
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Records are still stored on this browser/device. Export before clearing browser data or switching devices.',
+            style: bodyStyle,
           ),
         ],
       ),
