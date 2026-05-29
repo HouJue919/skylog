@@ -43,6 +43,8 @@ Use this checklist before sharing SkyLog with any outside tester.
 - Confirm My Drones shows usage, total time, latest flight, map, and media
   counts.
 - Confirm Backup Report explains records, export formats, and local-device risk.
+- Confirm AI Prompt Preview opens from Detail and clearly says no API call is
+  made.
 
 ## Beta Boundaries
 

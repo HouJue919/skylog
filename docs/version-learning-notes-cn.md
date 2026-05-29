@@ -708,9 +708,31 @@ v2.5 是从“记录飞行”走向“记录成长”的一步。以后如果加
 
 原初 Sprint 4 写了统计、设备和备份。v3.2 把备份部分从 JSON/CSV 按钮升级成更清楚的备份状态说明，让用户知道导出前后应该注意什么，也让 Sprint 4 更完整。
 
+## v3.3 AI Prompt Preview
+
+### 做了什么
+
+- 更新版本状态为 `SkyLog v3.3`
+- Flight Detail 增加 AI Readiness 区域
+- 增加 Preview AI Prompt 按钮
+- 弹窗显示未来 AI 总结功能可能使用的 prompt
+- 明确说明不会联网、不会调用 API、不会使用 API key
+- 添加自动测试，确认 AI Prompt Preview 可以打开
+
+### 学到什么
+
+- 真正接 AI 之前，应该先想清楚数据边界
+- 前端 App 不能直接保存 API key
+- AI 功能应该先做 prompt preview，再做本地 draft，再考虑真实 gateway
+- AI 输出应该是可编辑草稿，不应该代替用户判断
+
+### 为什么重要
+
+Sprint 5 的主题是 AI 和数据增强，但 SkyLog 的基础记录功能不能依赖 AI。v3.3 先做 AI Readiness，让项目开始进入 AI 阶段，同时避免 API key 泄露、成本失控和隐私边界不清的问题。
+
 ## 当前总结
 
-SkyLog 到 v3.2 已经覆盖了一个真实 App 的基础开发流程：
+SkyLog 到 v3.3 已经覆盖了一个真实 App 的基础开发流程：
 
 - 产品想法
 - 文档整理
@@ -745,13 +767,14 @@ SkyLog 到 v3.2 已经覆盖了一个真实 App 的基础开发流程：
 - CSV 导出
 - 设备档案摘要
 - 备份报告
+- AI prompt 预览
 - 自动测试
 - 项目总结
 
 下一阶段可以从三个方向选择：
 
 - 开始 3-5 人小范围测试
-- 关闭 Sprint 4，准备 Sprint 5
+- 继续 Sprint 5，做本地 draft summary
 - 后续再决定是否给无人机设备做独立编辑页面
 
 ## Sprint 4 结束检查点
@@ -762,7 +785,7 @@ Sprint 4 对应统计、设备和备份。到 v3.2 为止，这一阶段已经�
 
 - `docs/sprint-4-wrap-up-cn.md`
 
-Sprint 5 会进入 AI 和数据增强，但不会马上把真实 API 接进 App。下一阶段应该先做 AI readiness 和 prompt preview，把隐私、成本、失败处理和数据边界想清楚。
+Sprint 5 会进入 AI 和数据增强，但不会马上把真实 API 接进 App。v3.3 已经先完成 AI readiness 和 prompt preview，把隐私、成本、失败处理和数据边界作为第一步。
 
 Sprint 5 计划在：
 

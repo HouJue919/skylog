@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v3.2 - Backup Report
+SkyLog v3.3 - AI Prompt Preview
 
 This is a private beta testing version. It is not a public release yet.
 
@@ -41,10 +41,12 @@ Please try these basic flows:
    mapped records, and media records.
 18. Confirm Backup Report explains record count, export formats, and local-data
    risk.
-19. Export JSON Backup and confirm the dialog opens.
-20. Export CSV Table and confirm the table text opens.
-21. Copy the feedback template.
-22. Open Tester Instructions and confirm the limits are clear.
+19. Open a flight detail and preview the AI prompt.
+20. Confirm the AI prompt preview says no API call is made.
+21. Export JSON Backup and confirm the dialog opens.
+22. Export CSV Table and confirm the table text opens.
+23. Copy the feedback template.
+24. Open Tester Instructions and confirm the limits are clear.
 
 ## Feedback Questions
 
@@ -67,6 +69,7 @@ Please try these basic flows:
 - Drone profiles are generated from flight records, not edited as separate
   device files yet.
 - Backup Report is a readiness summary, not automatic cloud backup.
+- AI Prompt Preview does not call an API and does not generate real AI output.
 - JSON export copies a backup to the clipboard.
 - CSV export copies table-friendly text to the clipboard.
 - Feedback template copy depends on the device/browser clipboard.

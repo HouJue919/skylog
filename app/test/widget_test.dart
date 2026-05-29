@@ -58,8 +58,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v3.2'), findsOneWidget);
-    expect(find.text('Backup Report'), findsWidgets);
+    expect(find.text('SkyLog v3.3'), findsOneWidget);
+    expect(find.text('AI Prompt Preview'), findsOneWidget);
   });
 
   testWidgets('map screen opens mapped flight detail', (
@@ -992,6 +992,48 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Creative Review'), findsOneWidget);
+  });
+
+  testWidgets('flight detail previews AI prompt without API', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Logs'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Coastal sunset practice'));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.text('AI Readiness'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('AI Readiness'), findsOneWidget);
+    expect(
+      find.text('Prompt preview only. No network request or API key is used.'),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byKey(const Key('ai-prompt-preview-button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('AI Prompt Preview'), findsOneWidget);
+    expect(find.textContaining('No API call is made'), findsOneWidget);
+    expect(
+      find.textContaining('Flight title: Coastal sunset practice'),
+      findsOneWidget,
+    );
+    expect(find.textContaining('Location: Qingdao coast'), findsOneWidget);
+    expect(
+      find.textContaining('Purpose: Practice smooth coastal tracking shots'),
+      findsOneWidget,
+    );
+    expect(find.textContaining('Not sent in this preview'), findsOneWidget);
   });
 
   testWidgets('flight detail edits update the log list', (

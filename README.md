@@ -52,6 +52,7 @@ searchable, reviewable creative records.
 - Device profile summaries for drone usage, total time, latest flight, map, and
   media counts
 - Backup report for export readiness and local-data reminders
+- AI prompt preview for future editable flight summaries without API calls
 - Beta status and local-data privacy notes
 - Copyable tester feedback template
 - Beta release checklist
@@ -63,7 +64,7 @@ searchable, reviewable creative records.
 
 ## Current Stage
 
-SkyLog v3.2: Backup Report.
+SkyLog v3.3: AI Prompt Preview.
 
 The app currently supports:
 
@@ -84,18 +85,19 @@ The app currently supports:
 15. Profile statistics and drone usage summaries
 16. Device profile summaries
 17. Backup report for export readiness
-18. Beta status and local-data privacy notes
-19. Copyable tester feedback template
-20. Beta release checklist
-21. Known limits and tester instructions
-22. Deployment readiness checks
-23. Fixed web beta deployment path
-24. Small beta feedback plan
-25. Automatic web deployment after stable pushes
-26. Tester quick start
-27. Organized beta profile sections
-28. Web update guidance for cached beta links
-29. Early tester guide and feedback materials
+18. AI prompt preview without API calls
+19. Beta status and local-data privacy notes
+20. Copyable tester feedback template
+21. Beta release checklist
+22. Known limits and tester instructions
+23. Deployment readiness checks
+24. Fixed web beta deployment path
+25. Small beta feedback plan
+26. Automatic web deployment after stable pushes
+27. Tester quick start
+28. Organized beta profile sections
+29. Web update guidance for cached beta links
+30. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -127,7 +129,8 @@ tester needs before using it.
 - v3.1: device profile summaries for drone usage, time, latest flight, map, and
   media counts.
 - v3.2: Backup Report for export readiness and local-data reminders.
-- v3.3 next: close Sprint 4 and prepare for Sprint 5 planning.
+- v3.3: AI Prompt Preview for safe Sprint 5 readiness without API calls.
+- v3.4 next: local draft summary generator before any real AI gateway.
 - Later: feedback-driven fixes and public-facing polish before wider
   sharing.
 

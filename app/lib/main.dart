@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v3.2';
-const String _appStageLabel = 'Backup Report';
+const String _appVersionLabel = 'SkyLog v3.3';
+const String _appStageLabel = 'AI Prompt Preview';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -2419,6 +2419,75 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
     return double.tryParse(trimmedValue);
   }
 
+  String _buildAiPromptPreview() {
+    return '''
+You are helping a drone pilot write a concise, editable flight review draft.
+
+Use only the flight record fields below. Do not invent safety facts, legal advice, or hidden flight data.
+
+Flight title: ${_flight.title}
+Location: ${_flight.location}
+Date: ${_flight.date}
+Duration: ${_flight.duration}
+Drone: ${_flight.drone}
+Weather: ${_flight.weather}
+Checklist status: ${_flight.checklistLabel}
+Purpose: ${_flight.purpose.isEmpty ? 'Not provided' : _flight.purpose}
+Existing summary: ${_flight.summary.isEmpty ? 'Not provided' : _flight.summary}
+Issues: ${_flight.issues.isEmpty ? 'Not provided' : _flight.issues}
+Next improvements: ${_flight.improvements.isEmpty ? 'Not provided' : _flight.improvements}
+Media caption: ${_flight.mediaCaption.isEmpty ? 'Not provided' : _flight.mediaCaption}
+
+Return:
+1. A 2-3 sentence flight summary draft.
+2. One practical next improvement.
+3. One reminder that this is not a flight safety system.
+'''
+        .trim();
+  }
+
+  Future<void> _showAiPromptPreview(BuildContext context) async {
+    final promptPreview = _buildAiPromptPreview();
+
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('AI Prompt Preview'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'No API call is made. This preview shows what a future AI summary feature could send.',
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Included fields: title, location, date, duration, drone, weather, checklist, purpose, summary, issues, improvements, media caption.',
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Not sent in this preview: photos, videos, API keys, account data, or exact map tiles.',
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  promptPreview,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -2615,6 +2684,24 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
                           : _flight.improvements,
                     ),
                   ],
+          ),
+          const SizedBox(height: 16),
+          _DetailSection(
+            title: 'AI Readiness',
+            children: [
+              const _DetailRow(
+                label: 'Status',
+                value:
+                    'Prompt preview only. No network request or API key is used.',
+              ),
+              const SizedBox(height: 12),
+              FilledButton.icon(
+                key: const Key('ai-prompt-preview-button'),
+                onPressed: () => _showAiPromptPreview(context),
+                icon: const Icon(Icons.psychology_alt_outlined),
+                label: const Text('Preview AI Prompt'),
+              ),
+            ],
           ),
         ],
       ),

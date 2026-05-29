@@ -217,6 +217,12 @@ This will help turn the project into a strong long-term portfolio story.
 - Backup Report summarizes record count, total flight time, map-ready records,
   media-linked records, export options, and local-device risk.
 - Added widget test coverage for the Backup Report summary.
+- Started SkyLog v3.3 as the first Sprint 5 readiness milestone.
+- Updated the current app version label to `SkyLog v3.3`.
+- Added an AI Prompt Preview section to Flight Detail.
+- Prompt preview shows the future AI input fields without making a network
+  request or using an API key.
+- Added widget test coverage for opening the AI Prompt Preview.
 
 ### Reflection
 
@@ -288,10 +294,13 @@ small profile summaries generated from real flight records.
 SkyLog v3.2 closes the Sprint 4 backup thread by showing users what their
 exports contain and reminding them that records still live on the current
 browser/device.
+SkyLog v3.3 starts Sprint 5 carefully by previewing prompt structure and data
+boundaries before any real AI service is connected.
 
 ### Next Step
 
-- Close Sprint 4 and prepare Sprint 5 planning.
+- Continue Sprint 5 with a local draft summary generator before any real AI
+  gateway.
 - Keep generated device profiles simple before adding separate editable drone
   files.
 - Use feedback to decide whether spreadsheet export, backup reporting, and
