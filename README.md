@@ -44,6 +44,7 @@ searchable, reviewable creative records.
 - Form validation for required fields
 - Pre-flight safety checklist
 - Checklist completion saved into new flight records
+- Creative review fields for flight purpose, issues, and next improvements
 - Beta status and local-data privacy notes
 - Copyable tester feedback template
 - Beta release checklist
@@ -54,7 +55,7 @@ searchable, reviewable creative records.
 
 ## Current Stage
 
-SkyLog v2.4: Web Update Guidance.
+SkyLog v2.5: Creative Review Fields.
 
 The app currently supports:
 
@@ -67,18 +68,19 @@ The app currently supports:
 7. JSON backup export
 8. Pre-flight checklist with saved progress
 9. Checklist status attached to saved flight records
-10. Beta status and local-data privacy notes
-11. Copyable tester feedback template
-12. Beta release checklist
-13. Known limits and tester instructions
-14. Deployment readiness checks
-15. Fixed web beta deployment path
-16. Small beta feedback plan
-17. Automatic web deployment after stable pushes
-18. Tester quick start
-19. Organized beta profile sections
-20. Web update guidance for cached beta links
-21. Early tester guide and feedback materials
+10. Creative review fields for purpose, issues, and next improvements
+11. Beta status and local-data privacy notes
+12. Copyable tester feedback template
+13. Beta release checklist
+14. Known limits and tester instructions
+15. Deployment readiness checks
+16. Fixed web beta deployment path
+17. Small beta feedback plan
+18. Automatic web deployment after stable pushes
+19. Tester quick start
+20. Organized beta profile sections
+21. Web update guidance for cached beta links
+22. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -100,7 +102,9 @@ tester needs before using it.
 - v2.2: short first-test path for new beta testers.
 - v2.3: Profile beta tools grouped into tester, project, and release sections.
 - v2.4: guidance for testers when browsers cache an older web beta.
-- v2.5 next: feedback-driven fixes and public-facing polish before wider
+- v2.5: creative review fields for flight purpose, issues, and next
+  improvements.
+- v2.6 next: feedback-driven fixes and public-facing polish before wider
   sharing.
 
 ## Running The App

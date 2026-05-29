@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v2.4 - Web Update Guidance
+SkyLog v2.5 - Creative Review Fields
 
 This is a private beta testing version. It is not a public release yet.
 
@@ -10,8 +10,8 @@ This is a private beta testing version. It is not a public release yet.
 
 SkyLog helps drone pilots check basic pre-flight items and record each flight
 with location, date, duration, drone model, weather, checklist status, and a
-short reflection. The goal is to turn scattered flight memories into searchable
-flight records.
+short creative review. The goal is to turn scattered flight memories into
+searchable flight records and clear improvement notes.
 
 ## What To Test
 
@@ -22,14 +22,16 @@ Please try these basic flows:
 3. Open the app and review the Home screen.
 4. Go to Checklist and complete the pre-flight checks.
 5. Go to Add and create a new flight record.
-6. Go to Logs and confirm the new record appears.
-7. Tap the flight record and check that checklist status appears in Detail.
-8. Close and reopen the app, then confirm the record is still there.
-9. Delete a test record from Logs.
-10. Try saving with an empty title, location, or duration and check whether the
+6. Fill in Purpose, Issues, and Next Improvements if you have time.
+7. Go to Logs and confirm the new record appears.
+8. Tap the flight record and check that checklist status and creative review
+   notes appear in Detail.
+9. Close and reopen the app, then confirm the record is still there.
+10. Delete a test record from Logs.
+11. Try saving with an empty title, location, or duration and check whether the
    app explains what is missing.
-11. Go to Profile and copy the feedback template.
-12. Open Tester Instructions and confirm the limits are clear.
+12. Go to Profile and copy the feedback template.
+13. Open Tester Instructions and confirm the limits are clear.
 
 ## Feedback Questions
 

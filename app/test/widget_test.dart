@@ -9,6 +9,14 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
+  Future<void> saveFlight(WidgetTester tester) async {
+    final saveButton = tester.widget<FilledButton>(
+      find.byKey(const Key('save-flight-button')),
+    );
+    saveButton.onPressed?.call();
+    await tester.pumpAndSettle();
+  }
+
   testWidgets('SkyLog dashboard renders', (WidgetTester tester) async {
     await tester.pumpWidget(const SkyLogApp());
     await tester.pumpAndSettle();
@@ -43,8 +51,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v2.4'), findsOneWidget);
-    expect(find.text('Web Update Guidance'), findsOneWidget);
+    expect(find.text('SkyLog v2.5'), findsOneWidget);
+    expect(find.text('Creative Review Fields'), findsOneWidget);
   });
 
   testWidgets('profile groups beta tools by audience', (
@@ -448,10 +456,12 @@ void main() {
     await tester.enterText(fields.at(1), 'Safety field');
     await tester.enterText(fields.at(3), '14 min');
 
-    await tester.drag(find.byType(ListView), const Offset(0, -600));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Save Flight'));
-    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Save Flight'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await saveFlight(tester);
 
     await tester.tap(find.text('Checklist saved flight'));
     await tester.pumpAndSettle();
@@ -542,14 +552,82 @@ void main() {
     await tester.enterText(fields.at(2), 'May 27, 2026');
     await tester.enterText(fields.at(3), '16 min');
 
-    await tester.drag(find.byType(ListView), const Offset(0, -600));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Save Flight'));
-    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Save Flight'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await saveFlight(tester);
 
     expect(find.text('Flight Logs'), findsOneWidget);
     expect(find.text('Harbor orbit practice'), findsOneWidget);
     expect(find.text('Qingdao harbor - May 27, 2026'), findsOneWidget);
+  });
+
+  testWidgets('new flight saves creative review fields', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Add'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Title')),
+      'Creative review flight',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Location')),
+      'Practice field',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Duration')),
+      '19 min',
+    );
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey<String>('flight-field-Purpose')),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Purpose')),
+      'Practice reveal shots.',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Issues')),
+      'Yaw movement was too fast.',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('flight-field-Next Improvements')),
+      'Use slower stick input next time.',
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('Save Flight'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await saveFlight(tester);
+
+    expect(find.text('Flight Logs'), findsOneWidget);
+    expect(find.text('Creative review flight'), findsOneWidget);
+    expect(find.text('Practice reveal shots.'), findsOneWidget);
+
+    await tester.tap(find.text('Creative review flight'));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.text('Creative Review'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Purpose'), findsOneWidget);
+    expect(find.text('Practice reveal shots.'), findsOneWidget);
+    expect(find.text('Issues'), findsOneWidget);
+    expect(find.text('Yaw movement was too fast.'), findsOneWidget);
+    expect(find.text('Next Improvements'), findsOneWidget);
+    expect(find.text('Use slower stick input next time.'), findsOneWidget);
   });
 
   testWidgets('add flight form resets after saving', (
@@ -566,14 +644,16 @@ void main() {
     await tester.enterText(fields.at(1), 'Reset beach');
     await tester.enterText(fields.at(3), '9 min');
 
-    await tester.drag(find.byType(ListView), const Offset(0, -600));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Save Flight'));
-    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Save Flight'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await saveFlight(tester);
 
     await tester.tap(find.text('Add'));
     await tester.pumpAndSettle();
-    await tester.drag(find.byType(ListView), const Offset(0, 600));
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, 600));
     await tester.pumpAndSettle();
 
     expect(find.text('Reset test flight'), findsNothing);
@@ -636,7 +716,7 @@ void main() {
     await tester.drag(find.byType(ListView), const Offset(0, -500));
     await tester.pumpAndSettle();
 
-    expect(find.text('Flight Summary'), findsOneWidget);
+    expect(find.text('Creative Review'), findsOneWidget);
   });
 
   testWidgets('flight detail edits update the log list', (
@@ -684,13 +764,18 @@ void main() {
     await tester.enterText(fields.at(1), '');
     await tester.enterText(fields.at(3), '');
 
-    await tester.drag(find.byType(ListView), const Offset(0, -600));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Save Flight'));
-    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Save Flight'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await saveFlight(tester);
 
-    await tester.drag(find.byType(ListView), const Offset(0, 600));
-    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Add a short title for this flight.'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
 
     expect(find.text('Add a short title for this flight.'), findsOneWidget);
     expect(find.text('Location is required.'), findsOneWidget);
@@ -712,10 +797,12 @@ void main() {
     await tester.enterText(fields.at(2), 'May 27, 2026');
     await tester.enterText(fields.at(3), '21 min');
 
-    await tester.drag(find.byType(ListView), const Offset(0, -600));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Save Flight'));
-    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Save Flight'),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await saveFlight(tester);
 
     expect(find.text('V1 checklist flight'), findsOneWidget);
 

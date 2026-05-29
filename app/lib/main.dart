@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v2.4';
-const String _appStageLabel = 'Web Update Guidance';
+const String _appVersionLabel = 'SkyLog v2.5';
+const String _appStageLabel = 'Creative Review Fields';
 const int _preFlightChecklistTotal = 6;
 
 const List<String> _preFlightChecklistItems = [
@@ -27,7 +27,10 @@ class FlightRecord {
     required this.duration,
     required this.drone,
     required this.weather,
+    required this.purpose,
     required this.summary,
+    required this.issues,
+    required this.improvements,
     this.checklistCompleted = 0,
     this.checklistTotal = _preFlightChecklistTotal,
   });
@@ -38,7 +41,10 @@ class FlightRecord {
   final String duration;
   final String drone;
   final String weather;
+  final String purpose;
   final String summary;
+  final String issues;
+  final String improvements;
   final int checklistCompleted;
   final int checklistTotal;
 
@@ -62,7 +68,10 @@ class FlightRecord {
       'duration': duration,
       'drone': drone,
       'weather': weather,
+      'purpose': purpose,
       'summary': summary,
+      'issues': issues,
+      'improvements': improvements,
       'checklistCompleted': checklistCompleted,
       'checklistTotal': checklistTotal,
     };
@@ -76,7 +85,10 @@ class FlightRecord {
       duration: json['duration'] as String? ?? '',
       drone: json['drone'] as String? ?? '',
       weather: json['weather'] as String? ?? '',
+      purpose: json['purpose'] as String? ?? '',
       summary: json['summary'] as String? ?? '',
+      issues: json['issues'] as String? ?? '',
+      improvements: json['improvements'] as String? ?? '',
       checklistCompleted: json['checklistCompleted'] as int? ?? 0,
       checklistTotal:
           json['checklistTotal'] as int? ?? _preFlightChecklistTotal,
@@ -93,10 +105,13 @@ List<FlightRecord> _demoFlights() {
       duration: '24 min',
       drone: 'DJI Mini 4 Pro',
       weather: 'Cloudy - Wind level 4',
+      purpose: 'Practice smooth coastal tracking shots for a short reel.',
       checklistCompleted: 6,
       checklistTotal: 6,
       summary:
           'Good low-altitude tracking practice, but wind affected stability.',
+      issues: 'Crosswind made the last orbit less stable than planned.',
+      improvements: 'Check wind direction earlier and keep wider safety space.',
     ),
     const FlightRecord(
       title: 'Mountain overlook test',
@@ -105,9 +120,12 @@ List<FlightRecord> _demoFlights() {
       duration: '18 min',
       drone: 'DJI Mini 4 Pro',
       weather: 'Sunny - Light wind',
+      purpose: 'Test a wide opening shot from a safe overlook.',
       checklistCompleted: 6,
       checklistTotal: 6,
       summary: 'Tested wide establishing shots and safe return path.',
+      issues: 'Exposure changed too quickly when turning toward the sun.',
+      improvements: 'Lock exposure before starting the main camera move.',
     ),
     const FlightRecord(
       title: 'City park framing practice',
@@ -116,9 +134,12 @@ List<FlightRecord> _demoFlights() {
       duration: '31 min',
       drone: 'DJI Mini 3',
       weather: 'Cloudy - Calm',
+      purpose: 'Improve framing and slow reveal timing in an open field.',
       checklistCompleted: 5,
       checklistTotal: 6,
       summary: 'Practiced slow reveal shots and smoother yaw control.',
+      issues: 'One checklist item was missed before takeoff.',
+      improvements: 'Finish the full pre-flight checklist before recording.',
     ),
   ];
 }
@@ -509,7 +530,10 @@ class _FlightLogScreenState extends State<FlightLogScreen> {
         flight.duration,
         flight.drone,
         flight.weather,
+        flight.purpose,
         flight.summary,
+        flight.issues,
+        flight.improvements,
       ].join(' ').toLowerCase();
 
       return searchableText.contains(normalizedQuery);
@@ -585,9 +609,18 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
   final _weatherController = TextEditingController(
     text: 'Cloudy - Wind level 4',
   );
+  final _purposeController = TextEditingController(
+    text: 'Practice smooth coastal tracking shots for a short reel.',
+  );
   final _summaryController = TextEditingController(
     text:
         'Low-altitude movement looked good, but wind made some clips unstable.',
+  );
+  final _issuesController = TextEditingController(
+    text: 'Wind made the orbit less stable than planned.',
+  );
+  final _improvementsController = TextEditingController(
+    text: 'Check wind direction earlier and leave more safety space.',
   );
 
   @override
@@ -598,7 +631,10 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
     _durationController.dispose();
     _droneController.dispose();
     _weatherController.dispose();
+    _purposeController.dispose();
     _summaryController.dispose();
+    _issuesController.dispose();
+    _improvementsController.dispose();
     super.dispose();
   }
 
@@ -616,7 +652,10 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
         duration: _durationController.text.trim(),
         drone: _droneController.text.trim(),
         weather: _weatherController.text.trim(),
+        purpose: _purposeController.text.trim(),
         summary: _summaryController.text.trim(),
+        issues: _issuesController.text.trim(),
+        improvements: _improvementsController.text.trim(),
         checklistCompleted: widget.checklistCompleted,
         checklistTotal: widget.checklistTotal,
       ),
@@ -631,7 +670,10 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
     _durationController.clear();
     _droneController.text = 'DJI Mini 4 Pro';
     _weatherController.clear();
+    _purposeController.clear();
     _summaryController.clear();
+    _issuesController.clear();
+    _improvementsController.clear();
   }
 
   @override
@@ -640,71 +682,93 @@ class _AddFlightScreenState extends State<AddFlightScreen> {
       body: SafeArea(
         child: Form(
           key: _formKey,
-          child: ListView(
+          child: SingleChildScrollView(
             padding: const EdgeInsets.all(20),
-            children: [
-              const _ScreenTitle(
-                title: 'Add Flight',
-                subtitle:
-                    'Capture the core details while the flight is still fresh.',
-              ),
-              const SizedBox(height: 18),
-              _AddFlightChecklistSummary(
-                completed: widget.checklistCompleted,
-                total: widget.checklistTotal,
-              ),
-              const SizedBox(height: 18),
-              const _FormSectionTitle('Basic Info'),
-              const SizedBox(height: 10),
-              _FlightTextField(
-                label: 'Title',
-                controller: _titleController,
-                requiredMessage: 'Add a short title for this flight.',
-              ),
-              const SizedBox(height: 10),
-              _FlightTextField(
-                label: 'Location',
-                controller: _locationController,
-                requiredMessage: 'Location is required.',
-              ),
-              const SizedBox(height: 10),
-              _FlightTextField(label: 'Date', controller: _dateController),
-              const SizedBox(height: 10),
-              _FlightTextField(
-                label: 'Duration',
-                controller: _durationController,
-                requiredMessage: 'Flight duration is required.',
-              ),
-              const SizedBox(height: 18),
-              const _FormSectionTitle('Flight Context'),
-              const SizedBox(height: 10),
-              _FlightTextField(label: 'Drone', controller: _droneController),
-              const SizedBox(height: 10),
-              _FlightTextField(
-                label: 'Weather',
-                controller: _weatherController,
-              ),
-              const SizedBox(height: 18),
-              const _FormSectionTitle('Reflection'),
-              const SizedBox(height: 10),
-              _FlightTextField(
-                label: 'Summary',
-                controller: _summaryController,
-                maxLines: 3,
-              ),
-              const SizedBox(height: 18),
-              FilledButton.icon(
-                onPressed: _saveFlight,
-                icon: const Icon(Icons.save_outlined),
-                label: const Text('Save Flight'),
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size.fromHeight(52),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const _ScreenTitle(
+                  title: 'Add Flight',
+                  subtitle:
+                      'Capture the core details while the flight is still fresh.',
+                ),
+                const SizedBox(height: 18),
+                _AddFlightChecklistSummary(
+                  completed: widget.checklistCompleted,
+                  total: widget.checklistTotal,
+                ),
+                const SizedBox(height: 18),
+                const _FormSectionTitle('Basic Info'),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Title',
+                  controller: _titleController,
+                  requiredMessage: 'Add a short title for this flight.',
+                ),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Location',
+                  controller: _locationController,
+                  requiredMessage: 'Location is required.',
+                ),
+                const SizedBox(height: 10),
+                _FlightTextField(label: 'Date', controller: _dateController),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Duration',
+                  controller: _durationController,
+                  requiredMessage: 'Flight duration is required.',
+                ),
+                const SizedBox(height: 18),
+                const _FormSectionTitle('Flight Context'),
+                const SizedBox(height: 10),
+                _FlightTextField(label: 'Drone', controller: _droneController),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Weather',
+                  controller: _weatherController,
+                ),
+                const SizedBox(height: 18),
+                const _FormSectionTitle('Creative Review'),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Purpose',
+                  controller: _purposeController,
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Summary',
+                  controller: _summaryController,
+                  maxLines: 3,
+                ),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Issues',
+                  controller: _issuesController,
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 10),
+                _FlightTextField(
+                  label: 'Next Improvements',
+                  controller: _improvementsController,
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 18),
+                FilledButton.icon(
+                  key: const Key('save-flight-button'),
+                  onPressed: _saveFlight,
+                  icon: const Icon(Icons.save_outlined),
+                  label: const Text('Save Flight'),
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size.fromHeight(52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -1833,6 +1897,8 @@ class _FlightLogCard extends StatelessWidget {
                   _InfoChip(icon: Icons.timer_outlined, label: flight.duration),
                   _InfoChip(icon: Icons.flight, label: flight.drone),
                   _InfoChip(icon: Icons.cloud_outlined, label: flight.weather),
+                  if (flight.purpose.isNotEmpty)
+                    _InfoChip(icon: Icons.flag_outlined, label: flight.purpose),
                   _InfoChip(
                     icon: flight.wasChecklistComplete
                         ? Icons.check_circle_outline
@@ -1843,7 +1909,7 @@ class _FlightLogCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                flight.summary,
+                flight.summary.isEmpty ? 'No summary yet.' : flight.summary,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: const Color(0xFF365150),
                 ),
@@ -1880,7 +1946,10 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
   late final TextEditingController _durationController;
   late final TextEditingController _droneController;
   late final TextEditingController _weatherController;
+  late final TextEditingController _purposeController;
   late final TextEditingController _summaryController;
+  late final TextEditingController _issuesController;
+  late final TextEditingController _improvementsController;
 
   @override
   void initState() {
@@ -1892,7 +1961,10 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
     _durationController = TextEditingController(text: _flight.duration);
     _droneController = TextEditingController(text: _flight.drone);
     _weatherController = TextEditingController(text: _flight.weather);
+    _purposeController = TextEditingController(text: _flight.purpose);
     _summaryController = TextEditingController(text: _flight.summary);
+    _issuesController = TextEditingController(text: _flight.issues);
+    _improvementsController = TextEditingController(text: _flight.improvements);
   }
 
   @override
@@ -1903,7 +1975,10 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
     _durationController.dispose();
     _droneController.dispose();
     _weatherController.dispose();
+    _purposeController.dispose();
     _summaryController.dispose();
+    _issuesController.dispose();
+    _improvementsController.dispose();
     super.dispose();
   }
 
@@ -1915,7 +1990,10 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
       duration: _durationController.text.trim(),
       drone: _droneController.text.trim(),
       weather: _weatherController.text.trim(),
+      purpose: _purposeController.text.trim(),
       summary: _summaryController.text.trim(),
+      issues: _issuesController.text.trim(),
+      improvements: _improvementsController.text.trim(),
       checklistCompleted: _flight.checklistCompleted,
       checklistTotal: _flight.checklistTotal,
     );
@@ -2025,23 +2103,57 @@ class _FlightDetailScreenState extends State<FlightDetailScreen> {
           ),
           const SizedBox(height: 16),
           _DetailSection(
-            title: 'Flight Summary',
+            title: 'Creative Review',
             children: _isEditing
                 ? [
+                    _FlightTextField(
+                      label: 'Purpose',
+                      controller: _purposeController,
+                      maxLines: 2,
+                    ),
+                    const SizedBox(height: 10),
                     _FlightTextField(
                       label: 'Summary',
                       controller: _summaryController,
                       maxLines: 4,
                     ),
+                    const SizedBox(height: 10),
+                    _FlightTextField(
+                      label: 'Issues',
+                      controller: _issuesController,
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 10),
+                    _FlightTextField(
+                      label: 'Next Improvements',
+                      controller: _improvementsController,
+                      maxLines: 3,
+                    ),
                   ]
                 : [
-                    Text(
-                      _flight.summary.isEmpty
+                    _DetailRow(
+                      label: 'Purpose',
+                      value: _flight.purpose.isEmpty
+                          ? 'No purpose has been added yet.'
+                          : _flight.purpose,
+                    ),
+                    _DetailRow(
+                      label: 'Summary',
+                      value: _flight.summary.isEmpty
                           ? 'No summary has been added yet.'
                           : _flight.summary,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF365150),
-                      ),
+                    ),
+                    _DetailRow(
+                      label: 'Issues',
+                      value: _flight.issues.isEmpty
+                          ? 'No issues have been added yet.'
+                          : _flight.issues,
+                    ),
+                    _DetailRow(
+                      label: 'Next Improvements',
+                      value: _flight.improvements.isEmpty
+                          ? 'No next improvements have been added yet.'
+                          : _flight.improvements,
                     ),
                   ],
           ),
@@ -2060,6 +2172,7 @@ class _InfoChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: const BoxConstraints(maxWidth: 260),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       decoration: BoxDecoration(
         color: const Color(0xFFEAF4F1),
@@ -2070,11 +2183,14 @@ class _InfoChip extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: const Color(0xFF1D7373)),
           const SizedBox(width: 6),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: const Color(0xFF123737),
-              fontWeight: FontWeight.w700,
+          Flexible(
+            child: Text(
+              label,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: const Color(0xFF123737),
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],
@@ -2205,6 +2321,7 @@ class _FlightTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: ValueKey<String>('flight-field-$label'),
       controller: controller,
       maxLines: maxLines,
       validator: (value) {

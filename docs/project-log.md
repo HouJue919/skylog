@@ -168,6 +168,12 @@ This will help turn the project into a strong long-term portfolio story.
 - Added a Profile entry for Web Update Tips.
 - Added `docs/web-update-guidance.md` to explain browser cache refresh steps.
 - Added a widget test for opening the web update tips dialog.
+- Started SkyLog v2.5 as a creative review fields milestone.
+- Updated the current app version label to `SkyLog v2.5`.
+- Added purpose, issues, and next improvements fields to `FlightRecord`.
+- Added creative review inputs to the Add Flight and Flight Detail flows.
+- Included creative review fields in search and JSON backup export.
+- Added a widget test for saving and reviewing creative flight notes.
 
 ### Reflection
 
@@ -222,9 +228,11 @@ before they send feedback. SkyLog v2.3 reduces Profile clutter by grouping beta
 tools around what testers need first and what release/developer tools can stay
 later. SkyLog v2.4 addresses a real deployment issue from testing: browsers can
 cache an older Flutter Web version, so testers now get clear refresh guidance.
+SkyLog v2.5 returns to product depth by helping pilots record why a flight
+happened, what went wrong, and what they should improve next.
 
 ### Next Step
 
-- Share the fixed beta link with a small first group.
-- Record tester feedback in the project log.
-- Use feedback to decide the v2.5 fixes before adding major new features.
+- Test v2.5 on the fixed web beta link after deployment.
+- Ask early testers whether the creative review fields feel useful or too long.
+- Use feedback to decide the v2.6 fixes before adding major new features.
