@@ -229,6 +229,12 @@ This will help turn the project into a strong long-term portfolio story.
 - Bottom navigation and the version banner now respond to the selected
   language.
 - Added widget test coverage for switching the navigation language to Chinese.
+- Started SkyLog v3.5 as a local draft summary milestone.
+- Updated the current app version label to `SkyLog v3.5`.
+- Added Generate Local Draft to Flight Detail.
+- Local drafts use existing flight fields without network requests, API keys, or
+  real AI output.
+- Added widget test coverage for opening a generated local draft summary.
 
 ### Reflection
 
@@ -305,11 +311,13 @@ boundaries before any real AI service is connected.
 SkyLog v3.4 adds the first bilingual infrastructure so Chinese private testers
 can start using the app more naturally without blocking the English portfolio
 version.
+SkyLog v3.5 tests the AI review workflow locally before any real AI gateway is
+added.
 
 ### Next Step
 
-- Continue Sprint 5 with a local draft summary generator before any real AI
-  gateway.
+- Continue Sprint 5 with AI gateway design and stronger bilingual tester
+  materials.
 - Keep generated device profiles simple before adding separate editable drone
   files.
 - Use feedback to decide whether spreadsheet export, backup reporting, and

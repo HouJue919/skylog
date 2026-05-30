@@ -45,6 +45,7 @@ Use this checklist before sharing SkyLog with any outside tester.
 - Confirm Backup Report explains records, export formats, and local-device risk.
 - Confirm AI Prompt Preview opens from Detail and clearly says no API call is
   made.
+- Confirm Local Draft Summary opens from Detail and says it is not AI output.
 - Confirm Language Settings can switch the bottom navigation between English
   and Chinese.
 

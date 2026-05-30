@@ -2,7 +2,7 @@
 
 ## Current Version
 
-SkyLog v3.4 - Language Settings
+SkyLog v3.5 - Local Draft Summary
 
 This is a private beta testing version. It is not a public release yet.
 
@@ -43,12 +43,13 @@ Please try these basic flows:
    risk.
 19. Open a flight detail and preview the AI prompt.
 20. Confirm the AI prompt preview says no API call is made.
-21. Go to Profile and switch Language between English and 中文.
-22. Confirm the bottom navigation changes language.
-23. Export JSON Backup and confirm the dialog opens.
-24. Export CSV Table and confirm the table text opens.
-25. Copy the feedback template.
-26. Open Tester Instructions and confirm the limits are clear.
+21. Generate a Local Draft Summary and confirm it is marked as not AI output.
+22. Go to Profile and switch Language between English and 中文.
+23. Confirm the bottom navigation changes language.
+24. Export JSON Backup and confirm the dialog opens.
+25. Export CSV Table and confirm the table text opens.
+26. Copy the feedback template.
+27. Open Tester Instructions and confirm the limits are clear.
 
 ## Feedback Questions
 
@@ -72,6 +73,7 @@ Please try these basic flows:
   device files yet.
 - Backup Report is a readiness summary, not automatic cloud backup.
 - AI Prompt Preview does not call an API and does not generate real AI output.
+- Local Draft Summary is rule-based and not real AI output.
 - Language Settings is a starter and does not translate every screen yet.
 - JSON export copies a backup to the clipboard.
 - CSV export copies table-friendly text to the clipboard.

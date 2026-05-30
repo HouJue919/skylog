@@ -53,6 +53,7 @@ searchable, reviewable creative records.
   media counts
 - Backup report for export readiness and local-data reminders
 - AI prompt preview for future editable flight summaries without API calls
+- Local draft summary generator before real AI integration
 - Language selector starter for English and Chinese testers
 - Beta status and local-data privacy notes
 - Copyable tester feedback template
@@ -65,7 +66,7 @@ searchable, reviewable creative records.
 
 ## Current Stage
 
-SkyLog v3.4: Language Settings.
+SkyLog v3.5: Local Draft Summary.
 
 The app currently supports:
 
@@ -87,19 +88,20 @@ The app currently supports:
 16. Device profile summaries
 17. Backup report for export readiness
 18. AI prompt preview without API calls
-19. Language selector starter
-20. Beta status and local-data privacy notes
-21. Copyable tester feedback template
-22. Beta release checklist
-23. Known limits and tester instructions
-24. Deployment readiness checks
-25. Fixed web beta deployment path
-26. Small beta feedback plan
-27. Automatic web deployment after stable pushes
-28. Tester quick start
-29. Organized beta profile sections
-30. Web update guidance for cached beta links
-31. Early tester guide and feedback materials
+19. Local draft summary generator
+20. Language selector starter
+21. Beta status and local-data privacy notes
+22. Copyable tester feedback template
+23. Beta release checklist
+24. Known limits and tester instructions
+25. Deployment readiness checks
+26. Fixed web beta deployment path
+27. Small beta feedback plan
+28. Automatic web deployment after stable pushes
+29. Tester quick start
+30. Organized beta profile sections
+31. Web update guidance for cached beta links
+32. Early tester guide and feedback materials
 
 This is still a private beta, but the app now includes the basic explanations a
 tester needs before using it.
@@ -133,7 +135,8 @@ tester needs before using it.
 - v3.2: Backup Report for export readiness and local-data reminders.
 - v3.3: AI Prompt Preview for safe Sprint 5 readiness without API calls.
 - v3.4: Language Settings starter for English and Chinese private testers.
-- v3.5 next: local draft summary generator before any real AI gateway.
+- v3.5: local draft summary generator before any real AI gateway.
+- v3.6 next: AI gateway design and stronger bilingual tester materials.
 - Later: feedback-driven fixes and public-facing polish before wider
   sharing.
 

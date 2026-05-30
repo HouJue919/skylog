@@ -7,8 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
 const String _languageStorageKey = 'skylog_language';
-const String _appVersionLabel = 'SkyLog v3.4';
-const String _appStageLabel = 'Language Settings';
+const String _appVersionLabel = 'SkyLog v3.5';
+const String _appStageLabel = 'Local Draft Summary';
 const int _preFlightChecklistTotal = 6;
 
 enum AppLanguage { english, chinese }
@@ -2491,6 +2491,74 @@ Return:
         .trim();
   }
 
+  String _valueOrFallback(String value, String fallback) {
+    final trimmedValue = value.trim();
+    return trimmedValue.isEmpty ? fallback : trimmedValue;
+  }
+
+  String _buildLocalDraftSummary() {
+    final purpose = _valueOrFallback(
+      _flight.purpose,
+      'review this flight and preserve useful context',
+    );
+    final summary = _valueOrFallback(
+      _flight.summary,
+      'No previous summary was written.',
+    );
+    final issues = _valueOrFallback(
+      _flight.issues,
+      'No major issue was recorded.',
+    );
+    final improvements = _valueOrFallback(
+      _flight.improvements,
+      'Keep the next flight plan simple and review conditions before takeoff.',
+    );
+    final mediaCaption = _valueOrFallback(
+      _flight.mediaCaption,
+      'No media caption was recorded.',
+    );
+
+    return '''
+Local draft summary
+
+${_flight.title} was a ${_flight.duration} flight at ${_flight.location} using ${_flight.drone}. The recorded purpose was to $purpose. Conditions were noted as ${_flight.weather}, and the checklist status was ${_flight.checklistLabel}.
+
+Review draft: $summary Media note: $mediaCaption
+
+Issue to remember: $issues
+
+Suggested next improvement: $improvements
+
+This is a local rule-based draft, not AI output and not a flight safety system.
+'''
+        .trim();
+  }
+
+  Future<void> _showLocalDraftSummary(BuildContext context) async {
+    final draftSummary = _buildLocalDraftSummary();
+
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Local Draft Summary'),
+          content: SingleChildScrollView(
+            child: Text(
+              draftSummary,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _showAiPromptPreview(BuildContext context) async {
     final promptPreview = _buildAiPromptPreview();
 
@@ -2745,6 +2813,13 @@ Return:
                 onPressed: () => _showAiPromptPreview(context),
                 icon: const Icon(Icons.psychology_alt_outlined),
                 label: const Text('Preview AI Prompt'),
+              ),
+              const SizedBox(height: 10),
+              OutlinedButton.icon(
+                key: const Key('local-draft-summary-button'),
+                onPressed: () => _showLocalDraftSummary(context),
+                icon: const Icon(Icons.edit_note_outlined),
+                label: const Text('Generate Local Draft'),
               ),
             ],
           ),

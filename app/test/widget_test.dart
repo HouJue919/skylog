@@ -58,8 +58,8 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v3.4'), findsOneWidget);
-    expect(find.text('Language Settings'), findsOneWidget);
+    expect(find.text('SkyLog v3.5'), findsOneWidget);
+    expect(find.text('Local Draft Summary'), findsOneWidget);
   });
 
   testWidgets('profile switches navigation language to Chinese', (
@@ -88,7 +88,7 @@ void main() {
 
     await tester.tap(find.text('English'));
     await tester.pumpAndSettle();
-    expect(find.text('Language Settings'), findsOneWidget);
+    expect(find.text('Local Draft Summary'), findsOneWidget);
   });
 
   testWidgets('map screen opens mapped flight detail', (
@@ -1092,6 +1092,44 @@ void main() {
       findsOneWidget,
     );
     expect(find.textContaining('Not sent in this preview'), findsOneWidget);
+  });
+
+  testWidgets('flight detail generates local draft summary', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Logs'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Coastal sunset practice'));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('local-draft-summary-button')),
+      180,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('local-draft-summary-button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Local Draft Summary'), findsOneWidget);
+    expect(
+      find.textContaining('Coastal sunset practice was a 24 min flight'),
+      findsOneWidget,
+    );
+    expect(
+      find.textContaining('Review draft: Good low-altitude'),
+      findsOneWidget,
+    );
+    expect(
+      find.textContaining('Issue to remember: Crosswind made the last orbit'),
+      findsOneWidget,
+    );
+    expect(find.textContaining('not AI output'), findsOneWidget);
   });
 
   testWidgets('flight detail edits update the log list', (
