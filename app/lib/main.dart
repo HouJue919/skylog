@@ -6,9 +6,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String _flightStorageKey = 'skylog_flights';
 const String _checklistStorageKey = 'skylog_preflight_checklist';
-const String _appVersionLabel = 'SkyLog v3.3';
-const String _appStageLabel = 'AI Prompt Preview';
+const String _languageStorageKey = 'skylog_language';
+const String _appVersionLabel = 'SkyLog v3.4';
+const String _appStageLabel = 'Language Settings';
 const int _preFlightChecklistTotal = 6;
+
+enum AppLanguage { english, chinese }
+
+String _text(AppLanguage language, String english, String chinese) {
+  return language == AppLanguage.chinese ? chinese : english;
+}
+
+AppLanguage _languageFromCode(String? code) {
+  return code == 'zh' ? AppLanguage.chinese : AppLanguage.english;
+}
+
+String _languageCode(AppLanguage language) {
+  return language == AppLanguage.chinese ? 'zh' : 'en';
+}
 
 const List<String> _preFlightChecklistItems = [
   'Battery charged and locked in',
@@ -268,6 +283,7 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _selectedIndex = 0;
   bool _isLoading = true;
+  AppLanguage _language = AppLanguage.english;
 
   final List<FlightRecord> _flights = _demoFlights();
   final Set<int> _completedChecklistItems = {};
@@ -282,12 +298,14 @@ class _MainShellState extends State<MainShell> {
     final preferences = await SharedPreferences.getInstance();
     final savedFlights = preferences.getString(_flightStorageKey);
     final savedChecklist = preferences.getStringList(_checklistStorageKey);
+    final savedLanguage = preferences.getString(_languageStorageKey);
 
     if (savedFlights == null) {
       if (!mounted) {
         return;
       }
       setState(() {
+        _language = _languageFromCode(savedLanguage);
         _completedChecklistItems
           ..clear()
           ..addAll(_decodeChecklist(savedChecklist));
@@ -310,6 +328,7 @@ class _MainShellState extends State<MainShell> {
       return;
     }
     setState(() {
+      _language = _languageFromCode(savedLanguage);
       _flights
         ..clear()
         ..addAll(flights);
@@ -346,6 +365,14 @@ class _MainShellState extends State<MainShell> {
         .map((index) => index.toString())
         .toList();
     await preferences.setStringList(_checklistStorageKey, encoded);
+  }
+
+  Future<void> _setLanguage(AppLanguage language) async {
+    setState(() {
+      _language = language;
+    });
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString(_languageStorageKey, _languageCode(language));
   }
 
   Future<void> _toggleChecklistItem(int index, bool isComplete) async {
@@ -472,7 +499,12 @@ class _MainShellState extends State<MainShell> {
         onReset: _resetChecklist,
       ),
       FlightMapScreen(flights: _flights, onUpdate: _updateFlight),
-      ProfileScreen(flights: _flights, onResetDemoData: _resetDemoData),
+      ProfileScreen(
+        flights: _flights,
+        language: _language,
+        onLanguageChanged: _setLanguage,
+        onResetDemoData: _resetDemoData,
+      ),
     ];
 
     if (_isLoading) {
@@ -484,36 +516,36 @@ class _MainShellState extends State<MainShell> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _selectTab,
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
-            label: 'Home',
+            icon: const Icon(Icons.dashboard_outlined),
+            selectedIcon: const Icon(Icons.dashboard),
+            label: _text(_language, 'Home', '首页'),
           ),
           NavigationDestination(
-            icon: Icon(Icons.list_alt_outlined),
-            selectedIcon: Icon(Icons.list_alt),
-            label: 'Logs',
+            icon: const Icon(Icons.list_alt_outlined),
+            selectedIcon: const Icon(Icons.list_alt),
+            label: _text(_language, 'Logs', '日志'),
           ),
           NavigationDestination(
-            icon: Icon(Icons.add_circle_outline),
-            selectedIcon: Icon(Icons.add_circle),
-            label: 'Add',
+            icon: const Icon(Icons.add_circle_outline),
+            selectedIcon: const Icon(Icons.add_circle),
+            label: _text(_language, 'Add', '添加'),
           ),
           NavigationDestination(
-            icon: Icon(Icons.fact_check_outlined),
-            selectedIcon: Icon(Icons.fact_check),
-            label: 'Checklist',
+            icon: const Icon(Icons.fact_check_outlined),
+            selectedIcon: const Icon(Icons.fact_check),
+            label: _text(_language, 'Checklist', '检查'),
           ),
           NavigationDestination(
-            icon: Icon(Icons.map_outlined),
-            selectedIcon: Icon(Icons.map),
-            label: 'Map',
+            icon: const Icon(Icons.map_outlined),
+            selectedIcon: const Icon(Icons.map),
+            label: _text(_language, 'Map', '地图'),
           ),
           NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profile',
+            icon: const Icon(Icons.person_outline),
+            selectedIcon: const Icon(Icons.person),
+            label: _text(_language, 'Profile', '我的'),
           ),
         ],
       ),
@@ -1142,10 +1174,14 @@ class ProfileScreen extends StatelessWidget {
   const ProfileScreen({
     super.key,
     required this.flights,
+    required this.language,
+    required this.onLanguageChanged,
     required this.onResetDemoData,
   });
 
   final List<FlightRecord> flights;
+  final AppLanguage language;
+  final ValueChanged<AppLanguage> onLanguageChanged;
   final VoidCallback onResetDemoData;
 
   int get _totalFlightMinutes {
@@ -1793,12 +1829,21 @@ Important:
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            const _ScreenTitle(
-              title: 'Profile',
-              subtitle: 'Review beta status, data controls, and progress.',
+            _ScreenTitle(
+              title: _text(language, 'Profile', '我的'),
+              subtitle: _text(
+                language,
+                'Review beta status, data controls, and progress.',
+                '查看测试状态、数据管理和项目进度。',
+              ),
             ),
             const SizedBox(height: 18),
-            const _VersionBanner(),
+            _VersionBanner(language: language),
+            const SizedBox(height: 18),
+            _LanguageSelectorCard(
+              language: language,
+              onLanguageChanged: onLanguageChanged,
+            ),
             const SizedBox(height: 18),
             const _PilotCard(),
             const SizedBox(height: 18),
@@ -3127,7 +3172,9 @@ class _LocationSummary extends StatelessWidget {
 }
 
 class _VersionBanner extends StatelessWidget {
-  const _VersionBanner();
+  const _VersionBanner({required this.language});
+
+  final AppLanguage language;
 
   @override
   Widget build(BuildContext context) {
@@ -3156,7 +3203,7 @@ class _VersionBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  _appStageLabel,
+                  _text(language, _appStageLabel, '语言设置'),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: const Color(0xFF365150),
                     fontWeight: FontWeight.w700,
@@ -3164,13 +3211,90 @@ class _VersionBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Helping testers refresh the web beta when browsers cache older versions.',
+                  _text(
+                    language,
+                    'Preparing SkyLog for English and Chinese private testers.',
+                    '为英文和中文私测用户准备 SkyLog。',
+                  ),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: const Color(0xFF647B7A),
                   ),
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LanguageSelectorCard extends StatelessWidget {
+  const _LanguageSelectorCard({
+    required this.language,
+    required this.onLanguageChanged,
+  });
+
+  final AppLanguage language;
+  final ValueChanged<AppLanguage> onLanguageChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFFE1E8E6)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.translate_outlined, color: Color(0xFF1D7373)),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  _text(language, 'Language', '界面语言'),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: const Color(0xFF123737),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _text(
+              language,
+              'Start of bilingual support for English and Chinese testers.',
+              '中英文测试用户支持的第一步。',
+            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: const Color(0xFF647B7A)),
+          ),
+          const SizedBox(height: 12),
+          SegmentedButton<AppLanguage>(
+            key: const Key('language-selector'),
+            segments: const [
+              ButtonSegment<AppLanguage>(
+                value: AppLanguage.english,
+                label: Text('English'),
+                icon: Icon(Icons.language_outlined),
+              ),
+              ButtonSegment<AppLanguage>(
+                value: AppLanguage.chinese,
+                label: Text('中文'),
+                icon: Icon(Icons.translate_outlined),
+              ),
+            ],
+            selected: {language},
+            onSelectionChanged: (selection) {
+              onLanguageChanged(selection.first);
+            },
           ),
         ],
       ),

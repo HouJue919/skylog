@@ -223,6 +223,12 @@ This will help turn the project into a strong long-term portfolio story.
 - Prompt preview shows the future AI input fields without making a network
   request or using an API key.
 - Added widget test coverage for opening the AI Prompt Preview.
+- Started SkyLog v3.4 as a language settings milestone for bilingual testing.
+- Updated the current app version label to `SkyLog v3.4`.
+- Added a persisted English / Chinese language selector in Profile.
+- Bottom navigation and the version banner now respond to the selected
+  language.
+- Added widget test coverage for switching the navigation language to Chinese.
 
 ### Reflection
 
@@ -296,6 +302,9 @@ exports contain and reminding them that records still live on the current
 browser/device.
 SkyLog v3.3 starts Sprint 5 carefully by previewing prompt structure and data
 boundaries before any real AI service is connected.
+SkyLog v3.4 adds the first bilingual infrastructure so Chinese private testers
+can start using the app more naturally without blocking the English portfolio
+version.
 
 ### Next Step
 

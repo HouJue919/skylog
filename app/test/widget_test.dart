@@ -58,8 +58,37 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('SkyLog v3.3'), findsOneWidget);
-    expect(find.text('AI Prompt Preview'), findsOneWidget);
+    expect(find.text('SkyLog v3.4'), findsOneWidget);
+    expect(find.text('Language Settings'), findsOneWidget);
+  });
+
+  testWidgets('profile switches navigation language to Chinese', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const SkyLogApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Language'), findsOneWidget);
+    expect(find.text('English'), findsOneWidget);
+    expect(find.text('中文'), findsOneWidget);
+
+    await tester.tap(find.text('中文'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('语言设置'), findsOneWidget);
+    expect(find.text('首页'), findsOneWidget);
+    expect(find.text('日志'), findsOneWidget);
+    expect(find.text('添加'), findsOneWidget);
+    expect(find.text('检查'), findsOneWidget);
+    expect(find.text('地图'), findsOneWidget);
+    expect(find.text('我的'), findsWidgets);
+
+    await tester.tap(find.text('English'));
+    await tester.pumpAndSettle();
+    expect(find.text('Language Settings'), findsOneWidget);
   });
 
   testWidgets('map screen opens mapped flight detail', (
@@ -124,6 +153,13 @@ void main() {
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
 
+    await tester.scrollUntilVisible(
+      find.text('Pilot Stats'),
+      120,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
     expect(find.text('Pilot Stats'), findsOneWidget);
     expect(find.text('Flight Time'), findsOneWidget);
     expect(find.text('1h 13m'), findsOneWidget);
@@ -133,15 +169,25 @@ void main() {
     expect(find.text('DJI Mini 4 Pro'), findsWidgets);
 
     await tester.scrollUntilVisible(
-      find.text('My Drones'),
-      80,
+      find.text('2 flights - 42m total'),
+      120,
       scrollable: find.byType(Scrollable).first,
     );
+    await tester.pumpAndSettle();
+
     expect(find.text('DJI Mini 4 Pro'), findsWidgets);
     expect(find.text('2 flights - 42m total'), findsOneWidget);
     expect(find.text('Latest: May 24, 2026'), findsOneWidget);
     expect(find.text('2 mapped'), findsOneWidget);
     expect(find.text('2 media'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('1 flight - 31m total'),
+      120,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
     expect(find.text('DJI Mini 3'), findsOneWidget);
     expect(find.text('1 flight - 31m total'), findsOneWidget);
   });
@@ -156,11 +202,17 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.scrollUntilVisible(
-      find.text('About This Beta'),
+      find.byKey(const Key('about-beta-button')),
       300,
       scrollable: find.byType(Scrollable).first,
     );
-    await tester.tap(find.byKey(const Key('about-beta-button')));
+    final aboutBetaInkWell = tester.widget<InkWell>(
+      find.descendant(
+        of: find.byKey(const Key('about-beta-button')),
+        matching: find.byType(InkWell),
+      ),
+    );
+    aboutBetaInkWell.onTap?.call();
     await tester.pumpAndSettle();
 
     expect(find.text('About This Beta'), findsWidgets);
@@ -169,7 +221,13 @@ void main() {
     await tester.tap(find.text('Done'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const Key('privacy-note-button')));
+    final privacyInkWell = tester.widget<InkWell>(
+      find.descendant(
+        of: find.byKey(const Key('privacy-note-button')),
+        matching: find.byType(InkWell),
+      ),
+    );
+    privacyInkWell.onTap?.call();
     await tester.pumpAndSettle();
 
     expect(find.text('Privacy and Local Data'), findsWidgets);
